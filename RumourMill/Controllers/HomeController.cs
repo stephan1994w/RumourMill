@@ -4,14 +4,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using RumourMill.Models;
+
 namespace RumourMill.Controllers
 {
     public class HomeController : Controller
     {
+        private RumourMillMainEntities db = new RumourMillMainEntities();
+
         public ActionResult Index()
         {
-            return View();
+            return View(db.Questions.ToList());
         }
+
 
         public ActionResult About()
         {
