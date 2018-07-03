@@ -1,21 +1,11 @@
 ﻿
-@using WebMatrix.Data;
 
 @{
 
 
     ViewBag.Title = "The Rumour Mill";
 
-    var text = "";
 
-    if (IsPost)
-    {
-        text = Request.Form["text"];
-        var db = Database.Open("RumourMillMain");
-        var insertCommand = "INSERT INTO Questions (QuestionText) VALUES(@0)";
-        db.Execute(insertCommand, text);
-        Response.Redirect("~/Home");
-    }
 
 }
 
@@ -24,15 +14,16 @@
     <p class="lead">Have a question you've heard that you think needs answered? Submit it here</p>
 </div>
 <h2>Add your question</h2>
-<form method="post">
-    <fieldset>
-        <p>
-            <input type="text" name="text" placeholder="Enter your question" value="@Request.Form["title"]" />
-        </p>
 
-        <p><input type="submit" name="buttonSubmit" value="Submit" /></p>
-    </fieldset>
+<form action="~/Home/Save" method="POST">
+ <input type="text" name="questionText">
+ <input type="hidden" name="isApproved" value="false" />
+ <input type="hidden" name="isAnswered" value="false" />
+ <input type="hidden" name="answeredBy" value="" />
+ <input type="submit" value="Submit Question for real">
 </form>
+
+
 <h2>Questions</h2>
 <div class="container">
     <table class="table table-hover">
@@ -59,4 +50,3 @@
         </tbody>
     </table>
 </div>
-
