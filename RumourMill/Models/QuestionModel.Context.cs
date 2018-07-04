@@ -25,6 +25,8 @@ namespace RumourMill.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Leader> Leaders { get; set; }
+        public virtual DbSet<Reply> Replies { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
     }
 }

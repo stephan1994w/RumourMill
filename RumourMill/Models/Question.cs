@@ -18,6 +18,6 @@ namespace RumourMill.Models
         public string QuestionText { get; set; }
         public bool IsApproved { get; set; }
         public bool IsAnswered { get; set; }
-        public string AnsweredBy { get; set; }
+        public Nullable<System.DateTime> TimeAsked { get; set; }
     }
 }

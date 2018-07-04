@@ -19,6 +19,7 @@
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
+
 }
 
     .buttonNew:after {
@@ -49,16 +50,16 @@
 
 /* Button 1 */
 .btn-1 {
-    border: 3px solid #0e83cd;
-    color: #0e83cd;
+    border: 3px solid #fff;
+    color: #fff;
 }
 
 
 /* Button 1a */
 .btn-1a:hover,
 .btn-1a:active {
-    color: #fff;
-    background: #0e83cd;
+    color: #303e49;
+    background: #fff;
 }
 
 /* Button 1b */
@@ -67,12 +68,12 @@
     height: 0;
     top: 0;
     left: 0;
-    background: #0e83cd;
+    background: #fff;
 }
 
 .btn-1b:hover,
 .btn-1b:active {
-    color: #0e83cd;
+    color: #fff;
 }
 
     .btn-1b:hover:after,
@@ -86,12 +87,12 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: #0e83cd;
+    background: #fff;
 }
 
 .btn-1c:hover,
 .btn-1c:active {
-    color: #0e83cd;
+    color: #fff;
 }
 
     .btn-1c:hover:after,
@@ -132,23 +133,81 @@
             opacity: 1;
         }
 
-textarea{
-    font-family: Georgia, "Times New Roman", Times, serif;
-    background: rgba(255,255,255,.1);
-    border: none;
-    border-radius: 4px;
+
+<style type="text/css" >
+.form-style-4 {
+    width: 450px;
     font-size: 16px;
-    margin: 0;
-    outline: 0;
-    padding: 7px;
-    width: 100%;
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    background-color: #e8eeef;
-    color: #8a97a0;
-    -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
-    margin-bottom: 30px;
-    max-width:100%;
+    background: #495C70;
+    padding: 30px 30px 15px 30px;
+    border: 5px solid #53687E;
 }
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button],
+.form-style-4 input[type=text],
+.form-style-4 input[type=email],
+.form-style-4 textarea,
+.form-style-4 label {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 16px;
+    color: #fff;
+}
+
+.form-style-4 label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+    .form-style-4 label > span {
+        display: inline-block;
+        float: left;
+        width: 150px;
+    }
+
+.form-style-4 input[type=text],
+.form-style-4 input[type=email] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 275px;
+    outline: none;
+    padding: 0px 0px 0px 0px;
+    font-style: italic;
+}
+
+.form-style-4 textarea {
+    font-style: italic;
+    padding: 0px 0px 0px 0px;
+    background: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 1px dashed #83A4C5;
+    width: 275px;
+    overflow: hidden;
+    resize: none;
+    height: 20px;
+}
+
+    .form-style-4 textarea:focus,
+    .form-style-4 input[type=text]:focus,
+    .form-style-4 input[type=email]:focus,
+    .form-style-4 input[type=email] :focus {
+        border-bottom: 1px dashed #D9FFA9;
+    }
+
+.form-style-4 input[type=submit],
+.form-style-4 input[type=button] {
+    background: #576E86;
+    border: none;
+    padding: 8px 10px 8px 10px;
+    border-radius: 5px;
+    color: #A8BACE;
+}
+
+    .form-style-4 input[type=submit]:hover,
+    .form-style-4 input[type=button]:hover {
+        background: #394D61;
+    }
+
+</style >

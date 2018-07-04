@@ -163,6 +163,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Leader.cs">
+      <DependentUpon>QuestionModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Question.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>
     </Compile>
@@ -181,6 +184,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QuestionModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Reply.cs">
+      <DependentUpon>QuestionModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +200,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\component.css" />
     <Content Include="Content\default.css" />
+    <Content Include="Content\demo.css" />
+    <Content Include="Content\question.svg" />
+    <Content Include="Content\reset.css" />
+    <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="App_Start\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

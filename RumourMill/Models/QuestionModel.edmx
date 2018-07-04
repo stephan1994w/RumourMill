@@ -4,52 +4,114 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="RumourMillMainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="RumourMillMainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Leaders">
+          <Key>
+            <PropertyRef Name="LeaderId" />
+          </Key>
+          <Property Name="LeaderId" Type="int" Nullable="false" />
+          <Property Name="LeaderName" Type="varchar(max)" Nullable="false" />
+          <Property Name="UserName" Type="varchar(max)" Nullable="false" />
+          <Property Name="Password" Type="varchar(max)" Nullable="false" />
+          <Property Name="Image" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Questions">
           <Key>
             <PropertyRef Name="QuestionId" />
           </Key>
           <Property Name="QuestionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="QuestionText" Type="varchar" MaxLength="8000" Nullable="false" />
+          <Property Name="QuestionText" Type="varchar(max)" Nullable="false" />
           <Property Name="IsApproved" Type="bit" Nullable="false" />
           <Property Name="IsAnswered" Type="bit" Nullable="false" />
-          <Property Name="AnsweredBy" Type="varchar(max)" />
+          <Property Name="TimeAsked" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Replies">
+          <Key>
+            <PropertyRef Name="ReplyID" />
+          </Key>
+          <Property Name="ReplyID" Type="int" Nullable="false" />
+          <Property Name="fk_QuestionId" Type="int" Nullable="false" />
+          <Property Name="fk_LeaderId" Type="int" Nullable="false" />
+          <Property Name="ReplyText" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityContainer Name="RumourMillMainModelStoreContainer">
+          <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Replies" EntityType="Self.Replies" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RumourMillMainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="RumourMillMainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Leaders" EntityType="RumourMillMainModel.Leader" />
+          <EntitySet Name="Replies" EntityType="RumourMillMainModel.Reply" />
+          <EntitySet Name="Questions" EntityType="RumourMillMainModel.Question" />
+        </EntityContainer>
+        <EntityType Name="Leader">
+          <Key>
+            <PropertyRef Name="LeaderId" />
+          </Key>
+          <Property Name="LeaderId" Type="Int32" Nullable="false" />
+          <Property Name="LeaderName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="ReplyID" />
+          </Key>
+          <Property Name="ReplyID" Type="Int32" Nullable="false" />
+          <Property Name="fk_QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="fk_LeaderId" Type="Int32" Nullable="false" />
+          <Property Name="ReplyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="QuestionId" />
           </Key>
           <Property Name="QuestionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuestionText" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QuestionText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsApproved" Type="Boolean" Nullable="false" />
           <Property Name="IsAnswered" Type="Boolean" Nullable="false" />
-          <Property Name="AnsweredBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TimeAsked" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityContainer Name="RumourMillMainEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Questions" EntityType="Self.Question" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RumourMillMainModelStoreContainer" CdmEntityContainer="RumourMillMainEntities">
+          <EntitySetMapping Name="Leaders">
+            <EntityTypeMapping TypeName="RumourMillMainModel.Leader">
+              <MappingFragment StoreEntitySet="Leaders">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LeaderName" ColumnName="LeaderName" />
+                <ScalarProperty Name="LeaderId" ColumnName="LeaderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Replies">
+            <EntityTypeMapping TypeName="RumourMillMainModel.Reply">
+              <MappingFragment StoreEntitySet="Replies">
+                <ScalarProperty Name="ReplyText" ColumnName="ReplyText" />
+                <ScalarProperty Name="fk_LeaderId" ColumnName="fk_LeaderId" />
+                <ScalarProperty Name="fk_QuestionId" ColumnName="fk_QuestionId" />
+                <ScalarProperty Name="ReplyID" ColumnName="ReplyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="RumourMillMainModel.Question">
               <MappingFragment StoreEntitySet="Questions">
-                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
-                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
-                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="TimeAsked" ColumnName="TimeAsked" />
                 <ScalarProperty Name="IsAnswered" ColumnName="IsAnswered" />
-                <ScalarProperty Name="AnsweredBy" ColumnName="AnsweredBy" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
