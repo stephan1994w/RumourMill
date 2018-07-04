@@ -9,21 +9,33 @@
 
 }
 
-<div class="jumbotron">
-    <h1>The Rumour Mill</h1>
-    <p class="lead">Have a question you've heard that you think needs answered? Submit it here</p>
-</div>
+<h1>The Rumour Mill</h1>
+<p class="lead">Have a question you've heard that you think needs answered? Submit it here</p>
 <h2>Add your question</h2>
 
 <form action="~/Home/Save" method="POST">
- <input type="text" name="questionText">
- <input type="submit" value="Submit Question for real">
+    <textarea type="text" name="questionText"></textarea> <br />
+    <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">SUBMIT</button>
 </form>
 
 
 <h2>Questions</h2>
 <div class="container">
-    <table class="table table-hover">
+    @for (var i = Model.Count - 1; i >= 0; i--)
+    {
+        <div class="q-container">
+            <div class="question">
+                <div class="questiontext">
+                    @Model[i].QuestionText
+                </div>
+            </div>
+        </div>
+    }
+
+
+    @*<table class="table table-hover">
+
+
         <thead>
             <tr>
                 <th>Question ID</th>
@@ -34,16 +46,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var q in Model)
+
+            @for (var i = Model.Count - 1; i >= 0; i--)
             {
                 <tr>
-                    <td>@q.QuestionId</td>
-                    <td>@q.QuestionText</td>
-                    <td>@q.IsApproved</td>
-                    <td>@q.IsAnswered</td>
-                    <td>@q.AnsweredBy</td>
+                    <td>@Model[i].QuestionId</td>
+                    <td>@Model[i].QuestionText</td>
+                    <td>@Model[i].IsApproved</td>
+                    <td>@Model[i].IsAnswered</td>
+                    <td>@Model[i].AnsweredBy</td>
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
 </div>

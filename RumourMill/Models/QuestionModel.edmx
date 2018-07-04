@@ -10,7 +10,7 @@
             <PropertyRef Name="QuestionId" />
           </Key>
           <Property Name="QuestionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="QuestionText" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="QuestionText" Type="varchar" MaxLength="8000" Nullable="false" />
           <Property Name="IsApproved" Type="bit" Nullable="false" />
           <Property Name="IsAnswered" Type="bit" Nullable="false" />
           <Property Name="AnsweredBy" Type="varchar(max)" />
@@ -28,7 +28,7 @@
             <PropertyRef Name="QuestionId" />
           </Key>
           <Property Name="QuestionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="QuestionText" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="QuestionText" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsApproved" Type="Boolean" Nullable="false" />
           <Property Name="IsAnswered" Type="Boolean" Nullable="false" />
           <Property Name="AnsweredBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />

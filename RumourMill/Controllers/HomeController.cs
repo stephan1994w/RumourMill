@@ -22,11 +22,27 @@ namespace RumourMill.Controllers
 
             using (db)
             {
-                var question = db.Set<Question>();
-                question.Add(new Question { QuestionText = questionText, IsApproved = false, IsAnswered = false, AnsweredBy = "" });
 
-                db.SaveChanges();
-                return RedirectToAction("Index","Home");
+                var question = db.Set<Question>();
+                question.Add(new Question { QuestionText = questionText, IsApproved = false, IsAnswered = false});
+
+                if (string.IsNullOrEmpty(questionText))
+                {
+                    ModelState.AddModelError("Question", "Name Required");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                
             }
         }
 
