@@ -5,6 +5,11 @@
 }
 <div class="question-header">
     <h1>The Rumour Mill</h1>
+    <br />@if (@User.Identity.IsAuthenticated)
+                    {
+                       <p>Hello @User.Identity.Name!</p>
+                    }
+    <br</br>
     Have a question you've heard that you think needs answered? Submit it here.
     <form action="~/Home/Save" method="POST">
         <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
@@ -26,6 +31,10 @@
                         <p class="innertext">
                             @Model[i].QuestionText
                         </p>
+                        @if (@User.Identity.IsAuthenticated)
+                    {
+                       <p>Reply</p>
+                    }
                         <span class="cd-timeline__date">@Model[i].TimeAsked</span>
                     </div> <!-- cd-timeline__content -->
                 </div> <!-- cd-timeline__block -->
