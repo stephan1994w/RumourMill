@@ -17,13 +17,13 @@ namespace RumourMill.Controllers
             return View(db.Questions.ToList());
         }
         [AllowAnonymous]
-        public ActionResult Save(string questionText, bool isApproved, bool isAnswered, string answeredBy)
+        public ActionResult Save(string questionText)
         {
 
             using (db)
             {
                 var question = db.Set<Question>();
-                question.Add(new Question { QuestionText = questionText, IsApproved = isApproved, IsAnswered = isAnswered, AnsweredBy = answeredBy });
+                question.Add(new Question { QuestionText = questionText, IsApproved = false, IsAnswered = false, AnsweredBy = "" });
 
                 db.SaveChanges();
                 return RedirectToAction("Index","Home");
