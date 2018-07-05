@@ -33,7 +33,7 @@
           <Property Name="fk_QuestionId" Type="int" Nullable="false" />
           <Property Name="fk_LeaderId" Type="int" Nullable="false" />
           <Property Name="ReplyText" Type="varchar(max)" Nullable="false" />
-          <Property Name="TimeReplied" Type="datetime" Nullable="false" />
+          <Property Name="TimeReplied" Type="datetime" />
         </EntityType>
         <EntityContainer Name="RumourMillMainModelStoreContainer">
           <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="dbo" store:Type="Tables" />
@@ -77,7 +77,7 @@
           <Property Name="fk_QuestionId" Type="Int32" Nullable="false" />
           <Property Name="fk_LeaderId" Type="Int32" Nullable="false" />
           <Property Name="ReplyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TimeReplied" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TimeReplied" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>

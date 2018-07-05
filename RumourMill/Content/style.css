@@ -81,17 +81,6 @@ header h1 {
   background: #d7e4ed;
 }
 
-.cd-timeline__container::after{
-    /* this is the vertical line */
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 18px;
-    height: 100%;
-    width: 4px;
-    background: #d7e4ed;
-    z-index:-100;
-}
 
 
 .cd-timeline__block {

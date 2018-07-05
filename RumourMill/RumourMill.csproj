@@ -191,6 +191,7 @@
     <Compile Include="Models\Leader.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QContainer.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>
     </Compile>
@@ -209,6 +210,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QuestionModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestionReply.cs" />
     <Compile Include="Models\QuestionReplyViewModel.cs" />
     <Compile Include="Models\Reply.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>

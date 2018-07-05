@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Net.Http;
 using RumourMill.Models;
 using System.Security.Claims;
+using System.Collections;
 
 namespace RumourMill.Controllers
 {
@@ -16,39 +17,83 @@ namespace RumourMill.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            List<QuestionReplyViewModel> model = new List<QuestionReplyViewModel>();
+            List<QContainer> model = new List<QContainer>();
 
             var combinedModelQuery = (from x in db.Questions
-                                     join y in db.Replies on x.QuestionId equals y.fk_QuestionId
-                                     //join z in db.Leaders on y.fk_LeaderId equals z.LeaderId
-                                     select new
-                                     {                                        
-                                         qText = x.QuestionText,
-                                         qApproved = x.IsApproved,
-                                         qAnswered = x.IsAnswered,
-                                         qTime = x.TimeAsked,
-                                         rText = y.ReplyText,
-                                         rTime = y.TimeReplied,
-                                         //lName = z.LeaderName,
-                                         //lImage = z.Image,
-                                     }).ToList();
+                                      join y in db.Replies on x.QuestionId equals y.fk_QuestionId into qs
+                                      from a in qs.DefaultIfEmpty()
+                                      join z in db.Leaders on a.fk_LeaderId equals z.LeaderId into ls
+                                      from b in ls.DefaultIfEmpty()
+                                      select new
+                                      {
+                                          qText = x.QuestionText,
+                                          qApproved = x.IsApproved,
+                                          qAnswered = x.IsAnswered,
+                                          qID = x.QuestionId,
+                                          qTime = x.TimeAsked,
+                                          rText = a.ReplyText,
+                                          rTime = a.TimeReplied,
+                                          lName = b.LeaderName,
+                                          lImage = b.Image,
+                                      }).ToList();
 
-            foreach(var joinedItem in combinedModelQuery)
+            List<QuestionReplyViewModel> QRModel = new List<QuestionReplyViewModel>();
+            foreach (var joinedItem in combinedModelQuery)
             {
-                model.Add(new QuestionReplyViewModel()
+                QRModel.Add(new QuestionReplyViewModel()
                 {
                     QuestionText = joinedItem.qText,
                     IsApproved = joinedItem.qApproved,
                     IsAnswered = joinedItem.qAnswered,
+                    QuestionId = joinedItem.qID,
                     TimeAsked = joinedItem.qTime ?? DateTime.Now,
                     ReplyText = joinedItem.rText,
-                    TimeReplied = joinedItem.rTime,
-                    //LeaderName = joinedItem.lName,
-                    //Image = joinedItem.lImage
+                    TimeReplied = joinedItem.rTime ?? DateTime.Now,
+                    LeaderName = joinedItem.lName,
+                    Image = joinedItem.lImage
 
                 });
             }
 
+            ArrayList qLog = new ArrayList();
+            ArrayList qCount = new ArrayList();
+
+            foreach (var i in QRModel)
+            {
+                if (!qLog.Contains(i.QuestionId))
+                {
+                    //If new question, add it and set reply num to 1
+                    if (i.IsAnswered)
+                    {
+                        qCount.Add(1);
+                        qLog.Add(i.QuestionId);
+                    }
+                    else
+                    {
+                        qCount.Add(0);
+                        qLog.Add(i.QuestionId);
+                    }
+
+                }
+                else if (qLog.Contains(i.QuestionId))
+                {
+                    if (i.IsAnswered)
+                    {
+
+                        //If already added, increment number of replies by 1
+                        int index = qLog.IndexOf(i.QuestionId);
+                        int currentCount = (int)qCount[qLog.IndexOf(i.QuestionId)];
+                        currentCount++;
+                        qCount[index] = currentCount;
+                    }
+                }
+                
+            }
+            model.Add(new QContainer()
+            {
+                qrvmodel = QRModel,
+                questionCount = qCount
+            });
 
             return View(model);
         }

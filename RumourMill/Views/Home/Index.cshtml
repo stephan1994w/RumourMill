@@ -1,6 +1,6 @@
 ﻿@{
     /**/
-
+    
     ViewBag.Title = "The Rumour Mill";
 }
 <div class="question-header">
@@ -17,8 +17,15 @@
     </form>
 </div>
 
+@{ 
+    
+    foreach(var item in Model)
+    {
+
+    }
+}
 <div class="container body-content">
-    @foreach (var item in Model)
+    @for(int i = 0; i < Model.Count;i++)
     {
 
         <section class="cd-timeline js-cd-timeline">
@@ -28,34 +35,44 @@
                         <img src="../Content/question.svg" alt="Question">
                     </div>
 
-                    <!-- Question -->
+
                     <div class="cd-timeline__content js-cd-content">
                         <p class="innertext">
-                            @item.QuestionText
+                            @Model[0].qrvmodel[i].QuestionText
                         </p>
                         @if (@User.Identity.IsAuthenticated)
                         {
                             <p>Reply</p>
                         }
-                        <span class="cd-timeline__date">@item.TimeAsked</span>
+                        <span class="cd-timeline__date">@Model[0].qrvmodel[i].TimeAsked</span>
                     </div>
-                </div>
-                <div class="cd-timeline__block js-cd-block timeline-reply">
-                    <!-- Reply -->
-                    <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img">
-                        <img src="../Content/question.svg" alt="Question">
-                    </div>
-                    <div class="cd-timeline__content reply-frame">
+                </div><!-- Question -->
+                @if (Model[0].qrvmodel[i].IsAnswered)
+                {
+                    for (int j = 0; j < Model[0].questionCount[i]; j++)
+                    {
+                        <div class="cd-timeline__block js-cd-block timeline-reply">
 
-                        <p class="innertext reply-align">
-                            Testing response
-                        </p>
+                            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img">
+                                <img src="../Content/question.svg" alt="Question">
 
-                        <span class="cd-timeline__date reply-align">@item.TimeAsked</span>
-                        
-                    </div> <!-- cd-timeline__content -->
+                            </div>
 
-                </div> <!-- cd-timeline__block -->
+                            <div class="leadername">
+                                @Model[0].qrvmodel[i].LeaderName
+                            </div>
+                            <div class="cd-timeline__content reply-frame">
+
+                                <p class="innertext reply-align">
+                                    @Model[0].qrvmodel[i].ReplyText
+                                </p>
+                                <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[i].TimeReplied</span>
+
+                            </div> <!-- cd-timeline__content -->
+
+                        </div> <!-- Reply -->
+                    }
+                }
             </div>
         </section> <!-- cd-timeline -->
     }

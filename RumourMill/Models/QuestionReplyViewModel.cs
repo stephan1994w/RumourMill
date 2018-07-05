@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+using System.Collections;
+
 namespace RumourMill.Models
 {
     public class QuestionReplyViewModel
@@ -22,6 +24,8 @@ namespace RumourMill.Models
         public int LeaderId { get; set; }
         public string LeaderName { get; set; }
         public string Image { get; set; }
+   
+
 
     }
 }

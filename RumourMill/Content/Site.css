@@ -57,7 +57,6 @@ select{
 
 .reply-frame {
     margin-top: 10px;
-    width: 70%;
     float: right;
 }
 
@@ -87,4 +86,18 @@ select{
     border-right: none;
     left: 100%;
     right:0%;
+}
+
+
+.leadername {
+    position: absolute;
+    padding-top: 5px;
+    right: -15px;
+    z-index: 1000;
+    top: 50px;
+    left: auto;
+    width: 70px;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Fira Sans', sans-serif;
 }
