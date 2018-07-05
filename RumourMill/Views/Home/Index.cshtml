@@ -7,7 +7,7 @@
     <h1>The Rumour Mill</h1>
     <br />@if (@User.Identity.IsAuthenticated)
                     {
-                       <p>Hello @User.Identity.Name!</p>
+                       <p>Hello @User.Identity.Name!</p> 
                     }
     <br</br>
     Have a question you've heard that you think needs answered? Submit it here.
@@ -18,25 +18,43 @@
 </div>
 
 <div class="container body-content">
-    @for (var i = Model.Count - 1; i >= 0; i--)
+    @foreach (var item in Model)
     {
+
         <section class="cd-timeline js-cd-timeline">
             <div class="cd-timeline__container">
                 <div class="cd-timeline__block js-cd-block">
                     <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
                         <img src="../Content/question.svg" alt="Question">
-                    </div> <!-- cd-timeline__img -->
+                    </div>
 
+                    <!-- Question -->
                     <div class="cd-timeline__content js-cd-content">
                         <p class="innertext">
-                            @Model[i].QuestionText
+                            @item.QuestionText
                         </p>
                         @if (@User.Identity.IsAuthenticated)
-                    {
-                       <p>Reply</p>
-                    }
-                        <span class="cd-timeline__date">@Model[i].TimeAsked</span>
+                        {
+                            <p>Reply</p>
+                        }
+                        <span class="cd-timeline__date">@item.TimeAsked</span>
+                    </div>
+                </div>
+                <div class="cd-timeline__block js-cd-block timeline-reply">
+                    <!-- Reply -->
+                    <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img">
+                        <img src="../Content/question.svg" alt="Question">
+                    </div>
+                    <div class="cd-timeline__content reply-frame">
+
+                        <p class="innertext reply-align">
+                            Testing response
+                        </p>
+
+                        <span class="cd-timeline__date reply-align">@item.TimeAsked</span>
+                        
                     </div> <!-- cd-timeline__content -->
+
                 </div> <!-- cd-timeline__block -->
             </div>
         </section> <!-- cd-timeline -->

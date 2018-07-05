@@ -18,5 +18,6 @@ namespace RumourMill.Models
         public int fk_QuestionId { get; set; }
         public int fk_LeaderId { get; set; }
         public string ReplyText { get; set; }
+        public System.DateTime TimeReplied { get; set; }
     }
 }

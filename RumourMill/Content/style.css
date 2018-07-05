@@ -81,10 +81,22 @@ header h1 {
   background: #d7e4ed;
 }
 
+.cd-timeline__container::after{
+    /* this is the vertical line */
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 18px;
+    height: 100%;
+    width: 4px;
+    background: #d7e4ed;
+    z-index:-100;
+}
+
 
 .cd-timeline__block {
   position: relative;
-  margin: 2em 0;
+  /*margin: 2em 0;*/
 }
 
 .cd-timeline__block:after {
@@ -173,13 +185,14 @@ header h1 {
 }
 
 .cd-timeline__content {
-  position: relative;
-  margin-left: 60px;
-  background: white;
-  border-radius: 0.25em;
-  padding: 1em;
-  -webkit-box-shadow: 0 3px 0 #d7e4ed;
-          box-shadow: 0 3px 0 #d7e4ed;
+    position: relative;
+    margin-left: 60px;
+    margin-right: 60px;
+    background: white;
+    border-radius: 0.25em;
+    padding: 1em;
+    -webkit-box-shadow: 0 3px 0 #d7e4ed;
+    box-shadow: 0 3px 0 #d7e4ed;
 }
 
 .cd-timeline__content:after {

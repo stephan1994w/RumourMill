@@ -16,8 +16,44 @@ namespace RumourMill.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(db.Questions.ToList());
+            List<QuestionReplyViewModel> model = new List<QuestionReplyViewModel>();
+
+            var combinedModelQuery = (from x in db.Questions
+                                     join y in db.Replies on x.QuestionId equals y.fk_QuestionId
+                                     //join z in db.Leaders on y.fk_LeaderId equals z.LeaderId
+                                     select new
+                                     {                                        
+                                         qText = x.QuestionText,
+                                         qApproved = x.IsApproved,
+                                         qAnswered = x.IsAnswered,
+                                         qTime = x.TimeAsked,
+                                         rText = y.ReplyText,
+                                         rTime = y.TimeReplied,
+                                         //lName = z.LeaderName,
+                                         //lImage = z.Image,
+                                     }).ToList();
+
+            foreach(var joinedItem in combinedModelQuery)
+            {
+                model.Add(new QuestionReplyViewModel()
+                {
+                    QuestionText = joinedItem.qText,
+                    IsApproved = joinedItem.qApproved,
+                    IsAnswered = joinedItem.qAnswered,
+                    TimeAsked = joinedItem.qTime ?? DateTime.Now,
+                    ReplyText = joinedItem.rText,
+                    TimeReplied = joinedItem.rTime,
+                    //LeaderName = joinedItem.lName,
+                    //Image = joinedItem.lImage
+
+                });
+            }
+
+
+            return View(model);
         }
+
+
         [AllowAnonymous]
         public ActionResult Save(string questionText)
         {

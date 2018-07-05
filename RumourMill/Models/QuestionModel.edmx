@@ -33,6 +33,7 @@
           <Property Name="fk_QuestionId" Type="int" Nullable="false" />
           <Property Name="fk_LeaderId" Type="int" Nullable="false" />
           <Property Name="ReplyText" Type="varchar(max)" Nullable="false" />
+          <Property Name="TimeReplied" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityContainer Name="RumourMillMainModelStoreContainer">
           <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="dbo" store:Type="Tables" />
@@ -45,8 +46,8 @@
       <Schema Namespace="RumourMillMainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RumourMillMainEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Leaders" EntityType="RumourMillMainModel.Leader" />
-          <EntitySet Name="Replies" EntityType="RumourMillMainModel.Reply" />
           <EntitySet Name="Questions" EntityType="RumourMillMainModel.Question" />
+          <EntitySet Name="Replies" EntityType="RumourMillMainModel.Reply" />
         </EntityContainer>
         <EntityType Name="Leader">
           <Key>
@@ -58,15 +59,6 @@
           <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Reply">
-          <Key>
-            <PropertyRef Name="ReplyID" />
-          </Key>
-          <Property Name="ReplyID" Type="Int32" Nullable="false" />
-          <Property Name="fk_QuestionId" Type="Int32" Nullable="false" />
-          <Property Name="fk_LeaderId" Type="Int32" Nullable="false" />
-          <Property Name="ReplyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Question">
           <Key>
             <PropertyRef Name="QuestionId" />
@@ -76,6 +68,16 @@
           <Property Name="IsApproved" Type="Boolean" Nullable="false" />
           <Property Name="IsAnswered" Type="Boolean" Nullable="false" />
           <Property Name="TimeAsked" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="ReplyID" />
+          </Key>
+          <Property Name="ReplyID" Type="Int32" Nullable="false" />
+          <Property Name="fk_QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="fk_LeaderId" Type="Int32" Nullable="false" />
+          <Property Name="ReplyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TimeReplied" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -94,16 +96,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Replies">
-            <EntityTypeMapping TypeName="RumourMillMainModel.Reply">
-              <MappingFragment StoreEntitySet="Replies">
-                <ScalarProperty Name="ReplyText" ColumnName="ReplyText" />
-                <ScalarProperty Name="fk_LeaderId" ColumnName="fk_LeaderId" />
-                <ScalarProperty Name="fk_QuestionId" ColumnName="fk_QuestionId" />
-                <ScalarProperty Name="ReplyID" ColumnName="ReplyID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="RumourMillMainModel.Question">
               <MappingFragment StoreEntitySet="Questions">
@@ -112,6 +104,17 @@
                 <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
                 <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
                 <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Replies">
+            <EntityTypeMapping TypeName="RumourMillMainModel.Reply">
+              <MappingFragment StoreEntitySet="Replies">
+                <ScalarProperty Name="TimeReplied" ColumnName="TimeReplied" />
+                <ScalarProperty Name="ReplyText" ColumnName="ReplyText" />
+                <ScalarProperty Name="fk_LeaderId" ColumnName="fk_LeaderId" />
+                <ScalarProperty Name="fk_QuestionId" ColumnName="fk_QuestionId" />
+                <ScalarProperty Name="ReplyID" ColumnName="ReplyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
