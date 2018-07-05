@@ -40,9 +40,14 @@
                         <p class="innertext">
                             @Model[0].qrvmodel[i].QuestionText
                         </p>
-                        @if (@User.Identity.IsAuthenticated)
+                        @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin" )
                         {
                             <p>Reply</p>
+                        }
+                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin") 
+                        {
+                            <p>Approve</p> <br />
+                            <p>Reject</p>
                         }
                         <span class="cd-timeline__date">@Model[0].qrvmodel[i].TimeAsked</span>
                     </div>
