@@ -98,7 +98,7 @@ namespace RumourMill.Controllers
             return View(model);
         }
 
-
+        // allow anyone to ask a question
         [AllowAnonymous]
         public ActionResult Save(string questionText)
         {
@@ -126,6 +126,38 @@ namespace RumourMill.Controllers
                 }
 
                 
+            }
+        }
+        
+        // allow only SuperAdmin and Leader to reply
+        [Authorize(Users = "SuperAdmin, Leader")]
+        public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderID)
+        {
+
+            using (db)
+            {
+
+                var reply = db.Set<Reply>();
+                reply.Add(new Reply { ReplyText = replyText, fk_QuestionId = fk_QuestionId,
+                    fk_LeaderId = fk_LeaderID,  TimeReplied = DateTime.Now });
+
+                if (string.IsNullOrEmpty(replyText))
+                {
+                    ModelState.AddModelError("Reply", "Name Required");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+
             }
         }
 
