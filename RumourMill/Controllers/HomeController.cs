@@ -157,96 +157,46 @@ namespace RumourMill.Controllers
                 if (leaderDetails != null)
                 {
 
-                    /*
-                     * 
-                     * Super Admins :)
-                     * 
-                     */
-
-                    if (
-                        (leaderModel.UserName == "swilliams") ||
-                        (leaderModel.UserName == "dcallaghan")
-                        )
-
+                    var userType = "";
+                    if (leaderModel.UserName == "hmallon" ||
+                    leaderModel.UserName == "ablair" ||
+                    leaderModel.UserName == "dwardley"
+                    )
                     {
-                        var identity = new ClaimsIdentity(new[] {
-                 new Claim(ClaimTypes.Name, "SuperAdmin")
-                 // --> add as many claims as you need
-                    }, "ApplicationCookie");
-                        // get owin context
-                        var ctx = Request.GetOwinContext();
-                        // get authentication manager
-                        var authManager = ctx.Authentication;
-                        //sign in as claimed identity- in this case the admin
-                        //A user is authenticated by calling AuthenticationManager.SignIn
-                        authManager.SignIn(identity);
-                        //User is authenticated and redirected
-                        return RedirectToAction("Index", "Home");
-
+                        userType = "Leader";
+                    }
+                    else if (leaderModel.UserName == "swilliams" ||
+                        leaderModel.UserName == "dcallaghan")
+                    {
+                        userType = "SuperAdmin";
+                    }
+                    else if (leaderModel.UserName == "mnorman" || 
+                        leaderModel.UserName == "aohara")
+                    {
+                        userType = "Moderator";
                     }
 
-
-                    /*
-                     * 
-                     * Hard coded the usernames for now, need to add role to leader table then just have if( leaderModel.Role == "Leader") here
-                     * 
-                     */
-
-                    if (
-                        (leaderModel.UserName == "hmallon") || 
-                        (leaderModel.UserName == "ablair") ||
-                        (leaderModel.UserName == "dwardley")
-                        )
-
-                    {
-                        var identity = new ClaimsIdentity(new[] {
-                 new Claim(ClaimTypes.Name, "Leader")
+                    var identity = new ClaimsIdentity(new[] {
+                 new Claim(ClaimTypes.Name, userType)
                  // --> add as many claims as you need
                     }, "ApplicationCookie");
-                        // get owin context
-                        var ctx = Request.GetOwinContext();
-                        // get authentication manager
-                        var authManager = ctx.Authentication;
-                        //sign in as claimed identity- in this case the admin
-                        //A user is authenticated by calling AuthenticationManager.SignIn
-                        authManager.SignIn(identity);
-                        //User is authenticated and redirected
-                        return RedirectToAction("Index", "Home");
+                    // get owin context
+                    var ctx = Request.GetOwinContext();
+                    // get authentication manager
+                    var authManager = ctx.Authentication;
+                    //sign in as claimed identity- in this case the admin
+                    //A user is authenticated by calling AuthenticationManager.SignIn
+                    authManager.SignIn(identity);
+                    //User is authenticated and redirected
+                    return RedirectToAction("Index", "Home");
 
-                    }
-
-                    /*
-                     * 
-                     * Again, we will change this if statement to leaderModel.Role == "Moderator" (and remove the hard coded usernames) when role is added to leadermodel.
-                     * 
-                     */
-                    else if 
-                        (
-                        (leaderModel.UserName == "aohara") ||
-                        (leaderModel.UserName == "mnorman")
-                        )
-                    {
-                        var identity = new ClaimsIdentity(new[] {
-                 new Claim(ClaimTypes.Name, "Moderator")
-                 // --> add as many claims as you need
-                    }, "ApplicationCookie");
-                        // get owin context
-                        var ctx = Request.GetOwinContext();
-                        // get authentication manager
-                        var authManager = ctx.Authentication;
-                        //sign in as claimed identity- in this case the admin
-                        //A user is authenticated by calling AuthenticationManager.SignIn
-                        authManager.SignIn(identity);
-                        //User is authenticated and redirected
-                        return RedirectToAction("Index", "Home");
-                    }
-                        
                 }
                 else
                 {
                     //User authentication failed
                     leaderModel.ErrorMessage = "Invalid Credentials Supplied. Please try again.";
                 }
+                
             }
             return View(leaderModel); //Should always be declared on the end of an action method
 
