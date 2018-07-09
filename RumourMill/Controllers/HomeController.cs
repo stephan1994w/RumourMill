@@ -136,8 +136,7 @@ namespace RumourMill.Controllers
 
             using (db)
             {
-                //Question question = db.Questions.Find(fk_QuestionId);
-                //question.IsAnswered = true;
+           
                 var reply = db.Set<Reply>();
                 reply.Add(new Reply { ReplyText = replyText, fk_QuestionId = fk_QuestionId,
                     fk_LeaderId = 3,  TimeReplied = DateTime.Now });
@@ -149,8 +148,8 @@ namespace RumourMill.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).IsAnswered = true;
                     db.SaveChanges();
-
                     return RedirectToAction("Index", "Home");
                 }
                 else
