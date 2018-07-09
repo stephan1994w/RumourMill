@@ -9,7 +9,7 @@
                     {
                        <p>Hello @User.Identity.Name!</p> 
                     }
-    <br</br>
+  <br/>
     Have a question you've heard that you think needs answered? Submit it here.
     <form action="~/Home/Save" method="POST">
         <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
@@ -17,15 +17,8 @@
     </form>
 </div>
 
-@{ 
-    
-    foreach(var item in Model)
-    {
-
-    }
-}
 <div class="container body-content">
-    @for(int i = 0; i < Model.Count;i++)
+    @for(int i = 0; i < Model[0].qrvmodel.Count;i++)
     {
 
         <section class="cd-timeline js-cd-timeline">
@@ -54,6 +47,7 @@
                 </div><!-- Question -->
                 @if (Model[0].qrvmodel[i].IsAnswered)
                 {
+                    int jHold=0;
                     for (int j = 0; j < Model[0].questionCount[i]; j++)
                     {
                         <div class="cd-timeline__block js-cd-block timeline-reply">
@@ -64,19 +58,21 @@
                             </div>
 
                             <div class="leadername">
-                                @Model[0].qrvmodel[i].LeaderName
+                                @Model[0].qrvmodel[j].LeaderName
                             </div>
                             <div class="cd-timeline__content reply-frame">
 
                                 <p class="innertext reply-align">
-                                    @Model[0].qrvmodel[i].ReplyText
+                                    @Model[0].qrvmodel[j].ReplyText
                                 </p>
                                 <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[i].TimeReplied</span>
 
                             </div> <!-- cd-timeline__content -->
 
                         </div> <!-- Reply -->
+                        jHold = j;
                     }
+                    i = i + jHold;
                 }
             </div>
         </section> <!-- cd-timeline -->
