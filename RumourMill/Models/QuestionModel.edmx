@@ -29,7 +29,7 @@
           <Key>
             <PropertyRef Name="ReplyID" />
           </Key>
-          <Property Name="ReplyID" Type="int" Nullable="false" />
+          <Property Name="ReplyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="fk_QuestionId" Type="int" Nullable="false" />
           <Property Name="fk_LeaderId" Type="int" Nullable="false" />
           <Property Name="ReplyText" Type="varchar(max)" Nullable="false" />
@@ -73,7 +73,7 @@
           <Key>
             <PropertyRef Name="ReplyID" />
           </Key>
-          <Property Name="ReplyID" Type="Int32" Nullable="false" />
+          <Property Name="ReplyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="fk_QuestionId" Type="Int32" Nullable="false" />
           <Property Name="fk_LeaderId" Type="Int32" Nullable="false" />
           <Property Name="ReplyText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />

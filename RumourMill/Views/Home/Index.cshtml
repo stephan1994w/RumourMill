@@ -33,11 +33,17 @@
                         <p class="innertext">
                             @Model[0].qrvmodel[i].QuestionText
                         </p>
-                        @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin" )
+                        @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin")
                         {
-                            <p>Reply</p>
+                            <p id="replyButton">Reply</p>
+                            <form action="~/Home/SaveReply" method="POST">
+                                <textarea type="text" placeholder="Enter your reply here" name="replyText"></textarea> <br />
+                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[i].QuestionId" />
+                                <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">SUBMIT</button>
+                            </form>
                         }
-                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin") 
+
+                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
                         {
                             <p>Approve</p> <br />
                             <p>Reject</p>

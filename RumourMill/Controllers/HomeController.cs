@@ -34,7 +34,7 @@ namespace RumourMill.Controllers
                                           rText = a.ReplyText,
                                           rTime = a.TimeReplied,
                                           lName = b.LeaderName,
-                                          lImage = b.Image,
+                                          lImage = b.Image
                                       }).ToList();
 
             List<QuestionReplyViewModel> QRModel = new List<QuestionReplyViewModel>();
@@ -131,15 +131,16 @@ namespace RumourMill.Controllers
         
         // allow only SuperAdmin and Leader to reply
         [Authorize(Users = "SuperAdmin, Leader")]
-        public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderID)
+        public ActionResult SaveReply(string replyText, int fk_QuestionId)
         {
 
             using (db)
             {
-
+                //Question question = db.Questions.Find(fk_QuestionId);
+                //question.IsAnswered = true;
                 var reply = db.Set<Reply>();
                 reply.Add(new Reply { ReplyText = replyText, fk_QuestionId = fk_QuestionId,
-                    fk_LeaderId = fk_LeaderID,  TimeReplied = DateTime.Now });
+                    fk_LeaderId = 3,  TimeReplied = DateTime.Now });
 
                 if (string.IsNullOrEmpty(replyText))
                 {
