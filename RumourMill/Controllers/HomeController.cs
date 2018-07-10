@@ -160,6 +160,52 @@ namespace RumourMill.Controllers
             }
         }
 
+        // allow only SuperAdmin and Moderator to accept questions
+        [Authorize(Users = "SuperAdmin, Moderator")]
+        public ActionResult AcceptQuestion(int fk_QuestionId)
+        {
+
+            using (db)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).IsApproved = true;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+
+            }
+        }
+
+        // allow only SuperAdmin and Moderator to accept questions
+        [Authorize(Users = "SuperAdmin, Moderator")]
+        public ActionResult RejectQuestion(int fk_QuestionId)
+        {
+
+            using (db)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).IsApproved = false;
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+
+            }
+        }
+
+
+
 
         public ActionResult About()
         {
