@@ -279,6 +279,18 @@ namespace RumourMill.Controllers
 
         }
 
+        // log the user out.
+        public ActionResult LogOut()
+        {
+            // get owin context
+            var ctx = Request.GetOwinContext();
+            // get authentication manager
+            var authManager = ctx.Authentication;
+            //Calling SignOut passing the authentication type (so the manager knows exactly what cookie to remove).
+            authManager.SignOut("ApplicationCookie");
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
