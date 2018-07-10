@@ -18,8 +18,17 @@
 </div>
 
 <div class="container body-content">
-    @for(int i = 0; i < Model[0].qrvmodel.Count;i++)
+   
+    @for(int i = 0, p = 0, q = 0; i < Model[0].questionCount.Count;i++)
     {
+        //q += Model[0].questionCount[i];
+        //if (Model[0].questionCount[i] > 1)
+        //{
+
+        //    int hold = Model[0].questionCount[p];
+        //    p += hold - 1;
+        //}
+
 
         <section class="cd-timeline js-cd-timeline">
             <div class="cd-timeline__container">
@@ -27,18 +36,16 @@
                     <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
                         <img src="../Content/question.svg" alt="Question">
                     </div>
-
-
                     <div class="cd-timeline__content js-cd-content">
                         <p class="innertext">
-                            @Model[0].qrvmodel[i].QuestionText
+                            @Model[0].qrvmodel[p].QuestionText
                         </p>
                         @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin")
                         {
                             <p id="replyButton">Reply</p>
                             <form action="~/Home/SaveReply" method="POST">
                                 <textarea type="text" placeholder="Enter your reply here" name="replyText"></textarea> <br />
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[i].QuestionId" />
+                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
                                 <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">SUBMIT</button>
                             </form>
                         }
@@ -48,12 +55,13 @@
                             <p>Approve</p> <br />
                             <p>Reject</p>
                         }
-                        <span class="cd-timeline__date">@Model[0].qrvmodel[i].TimeAsked</span>
+                        <span class="cd-timeline__date">@Model[0].qrvmodel[p].TimeAsked</span>
                     </div>
                 </div><!-- Question -->
-                @if (Model[0].qrvmodel[i].IsAnswered)
+                @if (Model[0].qrvmodel[p].IsAnswered)
                 {
-                    int jHold=0;
+                    //int jHold=0;
+
                     for (int j = 0; j < Model[0].questionCount[i]; j++)
                     {
                         <div class="cd-timeline__block js-cd-block timeline-reply">
@@ -64,65 +72,28 @@
                             </div>
 
                             <div class="leadername">
-                                @Model[0].qrvmodel[j].LeaderName
+                                @Model[0].qrvmodel[p+j].LeaderName
                             </div>
                             <div class="cd-timeline__content reply-frame">
 
                                 <p class="innertext reply-align">
-                                    @Model[0].qrvmodel[j].ReplyText
+                                    @Model[0].qrvmodel[p+j].ReplyText
                                 </p>
-                                <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[i].TimeReplied</span>
-
+                                <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[p+j].TimeReplied</span>
                             </div> <!-- cd-timeline__content -->
-
                         </div> <!-- Reply -->
-                        jHold = j;
                     }
-                    i = i + jHold;
+                    //jHold += j;
+                    // i = i + Model[0].questionCount[i] - 1;
+                    // continue;
+                   
                 }
             </div>
         </section> <!-- cd-timeline -->
+
+
+        p = p + Model[0].questionCount[i];
+
     }
 </div>
-    @*
-
-              @Model[i].QuestionText
-
-            <div class="container">
-
-            {
-            <div class="q-container">
-                <div class="question">
-
-                </div>
-            </div>
-            }
-
-
-            <table class="table table-hover">
-
-
-                    <thead>
-                        <tr>
-                            <th>Question ID</th>
-                            <th>Question Text</th>
-                            <th>Has Been Approved</th>
-                            <th>Has Been Answered</th>
-                            <th>Answered By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @for (var i = Model.Count - 1; i >= 0; i--)
-                        {
-                            <tr>
-                                <td>@Model[i].QuestionId</td>
-                                <td>@Model[i].QuestionText</td>
-                                <td>@Model[i].IsApproved</td>
-                                <td>@Model[i].IsAnswered</td>
-                                <td>@Model[i].AnsweredBy</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-        </div>*@
+  

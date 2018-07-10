@@ -73,7 +73,6 @@ namespace RumourMill.Controllers
                         qCount.Add(0);
                         qLog.Add(i.QuestionId);
                     }
-
                 }
                 else if (qLog.Contains(i.QuestionId))
                 {
