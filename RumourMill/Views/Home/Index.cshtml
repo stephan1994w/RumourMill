@@ -1,18 +1,24 @@
 ﻿@{
     /**/
-    
+
     ViewBag.Title = "The Rumour Mill";
 }
-<div class="question-header">
-    <h1>The Rumour Mill</h1>
-    <br />@if (@User.Identity.IsAuthenticated)
+<div class="topbar">
+    @if (@User.Identity.IsAuthenticated)
     {
-        <p>Hello @User.Identity.Name!</p> <a href="/Home/Logout">Logout</a>
+        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name</span> &#124 <a href="/Home/Logout">Logout</a></p>
     }
     @if (!@User.Identity.IsAuthenticated)
     {
-        <p>Hello, Anonymous!</p> <a href="/Home/Login">Login</a>
+        <div class="welcometext">
+            <a href="/Home/Login">Login</a>
+        </div>
     }
+</div>
+<div class="question-header">
+
+    <h1>The Rumour Mill</h1>
+
     <br />
     Have a question you've heard that you think needs answered? Submit it here.
     <form action="~/Home/Save" method="POST">
@@ -22,8 +28,8 @@
 </div>
 
 <div class="container body-content">
-   
-    @for(int i = 0, p = 0, q = 0; i < Model[0].questionCount.Count;i++)
+
+    @for (int i = 0, p = 0, q = 0; i < Model[0].questionCount.Count; i++)
     {
         //q += Model[0].questionCount[i];
         //if (Model[0].questionCount[i] > 1)
@@ -41,8 +47,8 @@
                         <img src="../Content/question.svg" alt="Question">
                     </div>
 
-                    
-                        <div class="@(Model[0].qrvmodel[p].IsApproved && (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin") ? "cd-timeline__content-approved":"cd-timeline__content-rejected" ) cd-timeline__content js-cd-content">
+
+                    <div class="@(Model[0].qrvmodel[p].IsApproved && (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin") ? "cd-timeline__content-approved":"cd-timeline__content-rejected" ) cd-timeline__content js-cd-content">
 
                         <p class="innertext">
                             @Model[0].qrvmodel[p].QuestionText
@@ -91,21 +97,21 @@
                             </div>
 
                             <div class="leadername">
-                                @Model[0].qrvmodel[p+j].LeaderName
+                                @Model[0].qrvmodel[p + j].LeaderName
                             </div>
                             <div class="cd-timeline__content reply-frame">
 
                                 <p class="innertext reply-align">
-                                    @Model[0].qrvmodel[p+j].ReplyText
+                                    @Model[0].qrvmodel[p + j].ReplyText
                                 </p>
-                                <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[p+j].TimeReplied</span>
+                                <span class="cd-timeline__date reply-align">@Model[0].qrvmodel[p + j].TimeReplied</span>
                             </div> <!-- cd-timeline__content -->
                         </div> <!-- Reply -->
                     }
                     //jHold += j;
                     // i = i + Model[0].questionCount[i] - 1;
                     // continue;
-                   
+
                 }
             </div>
         </section> <!-- cd-timeline -->
@@ -115,4 +121,3 @@
 
     }
 </div>
-  
