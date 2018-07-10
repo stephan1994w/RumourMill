@@ -36,33 +36,41 @@
                     <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
                         <img src="../Content/question.svg" alt="Question">
                     </div>
-                    <div class="cd-timeline__content js-cd-content">
+
+                    
+                        <div class="@(Model[0].qrvmodel[p].IsApproved && (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin") ? "cd-timeline__content-approved":"cd-timeline__content-rejected" ) cd-timeline__content js-cd-content">
+
                         <p class="innertext">
                             @Model[0].qrvmodel[p].QuestionText
                         </p>
-                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
-                        {
-                            <form action="~/Home/AcceptQuestion" method="POST">
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">ACCEPT</button>
-                            </form>
-                        }
-                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
-                        {
-                            <form action="~/Home/RejectQuestion" method="POST">
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
-                            </form>
-                        }
+
+                        <span class="cd-timeline__date">@Model[0].qrvmodel[p].TimeAsked</span>
+
                         @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin")
                         {
                             <form action="~/Home/SaveReply" method="POST">
-                                <textarea type="text" placeholder="Enter your reply here" name="replyText"></textarea> <br />
+                                <textarea type="text" placeholder="Enter your reply here" class="replyTextArea" name="replyText"></textarea> <br />
                                 <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">SUBMIT</button>
+                                <button type="submit" class="submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
                             </form>
                         }
-                        <span class="cd-timeline__date">@Model[0].qrvmodel[p].TimeAsked</span>
+                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
+                        {
+                            <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
+                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                                <input type="hidden" name="IsApproved" value="True" />
+                                <button type="submit" class="approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
+                            </form>
+                        }
+                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
+                        {
+                            <form action="~/Home/RejectQuestion" class="buttons" method="POST">
+                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                                <input type="hidden" name="IsApproved" value="False" />
+                                <button type="submit" class="reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
+                            </form>
+                        }
+                        <div id="blank"></div>
                     </div>
                 </div><!-- Question -->
                 @if (Model[0].qrvmodel[p].IsAnswered)

@@ -55,6 +55,8 @@
 }
 
 
+
+
 /* Button 1a */
 .btn-1a:hover,
 .btn-1a:active {
@@ -205,9 +207,52 @@
     color: #A8BACE;
 }
 
-    .form-style-4 input[type=submit]:hover,
-    .form-style-4 input[type=button]:hover {
-        background: #394D61;
-    }
+.form-style-4 input[type=submit]:hover,
+.form-style-4 input[type=button]:hover {
+    background: #394D61;
+}
 
-</style >
+.approve {
+    border: 2px solid #007c0e;
+    color: #007c0e;
+}
+
+.approve:hover, .reject:active {
+    color: white;
+    background: #007c0e;
+}
+
+.reject {
+    border: 2px solid #7c0000;
+    color: #7c0000;
+}
+
+.reject:hover, .reject:active {
+    color: white;
+    background: #7c0000;
+}
+
+.submit {
+    border: 2px solid #303e49;
+    color: #303e49;
+    float: right;
+}
+
+.submit:hover, .reject:active {
+    color: white;
+    background: #303e49;
+}
+
+.buttons {
+    float:left;
+    padding:0 10px 0 0;
+}
+
+.replyTextArea{
+    margin-top: 10px;
+    width: 100%;
+    height: 100px;
+    color: black;
+    padding: 20px;
+    border-radius: 5px;
+}
