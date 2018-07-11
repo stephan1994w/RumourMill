@@ -7,6 +7,8 @@ using System.Net.Http;
 using RumourMill.Models;
 using System.Security.Claims;
 using System.Collections;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace RumourMill.Controllers
 {
@@ -230,7 +232,9 @@ namespace RumourMill.Controllers
             }
             using (RumourMillMainEntities db = new RumourMillMainEntities())
             {
-                var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == leaderModel.Password).FirstOrDefault();
+                // hash the password and compare against database
+                var hashedPassword = Sha256encrypt(leaderModel.Password);
+                var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == hashedPassword).FirstOrDefault();
                 if (leaderDetails != null)
                 {
 
@@ -297,6 +301,15 @@ namespace RumourMill.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        //method to hash the password using SHA256 encryption
+        public static string Sha256encrypt(string phrase)
+        {
+            UTF8Encoding encoder = new UTF8Encoding();
+            SHA256Managed sha256hasher = new SHA256Managed();
+            byte[] hashedDataBytes = sha256hasher.ComputeHash(encoder.GetBytes(phrase));
+            return Convert.ToBase64String(hashedDataBytes);
         }
     }
 }
