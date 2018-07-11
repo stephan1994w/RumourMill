@@ -130,7 +130,7 @@ namespace RumourMill.Controllers
         
         // allow only SuperAdmin and Leader to reply
         [Authorize(Users = "SuperAdmin, Leader")]
-        public ActionResult SaveReply(string replyText, int fk_QuestionId)
+        public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderId)
         {
 
             using (db)
@@ -138,7 +138,7 @@ namespace RumourMill.Controllers
            
                 var reply = db.Set<Reply>();
                 reply.Add(new Reply { ReplyText = replyText, fk_QuestionId = fk_QuestionId,
-                    fk_LeaderId = 3,  TimeReplied = DateTime.Now });
+                    fk_LeaderId = fk_LeaderId,  TimeReplied = DateTime.Now });
 
                 if (string.IsNullOrEmpty(replyText))
                 {
@@ -257,6 +257,7 @@ namespace RumourMill.Controllers
                  new Claim(ClaimTypes.Name, userType)
                  // --> add as many claims as you need
                     }, "ApplicationCookie");
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString()));
                     // get owin context
                     var ctx = Request.GetOwinContext();
                     // get authentication manager

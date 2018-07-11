@@ -3,16 +3,18 @@
 
     ViewBag.Title = "The Rumour Mill";
 }
+@using Microsoft.AspNet.Identity{
 <div class="topbar">
     @if (@User.Identity.IsAuthenticated)
     {
-        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name</span> &#124 <a href="/Home/Logout">Logout</a></p>
+        <p class="welcometext">Welcome, <span class="name">@User.Identity.GetUserId() </span> &#124 <a href="/Home/Logout">Logout</a></p>
     }
     @if (!@User.Identity.IsAuthenticated)
     {
         <div class="welcometext">
             <a href="/Home/Login">Login</a>
         </div>
+    }
     }
 </div>
 <div class="question-header">
@@ -61,6 +63,7 @@
                             <form action="~/Home/SaveReply" method="POST">
                                 <textarea type="text" placeholder="Enter your reply here" class="replyTextArea" name="replyText"></textarea> <br />
                                 <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                                <input type="hidden" name="fk_LeaderId" value="@User.Identity.GetUserId()" />
                                 <button type="submit" class="submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
                             </form>
                         }
