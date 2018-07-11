@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Login";
 }
+
 @Html.ValidationSummary(true)
 <!DOCTYPE html>
 <html>
@@ -10,9 +11,8 @@
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
     <style>
-        #login-div {
-            border: 1px solid #ccc;
-            padding: 40px 40px;
+        body {
+            background: #2d343d !important;
         }
         #field-validation-error {
             color: red;
@@ -20,20 +20,21 @@
     </style>
 </head>
 <body class="loginPage">
-        @using (Html.BeginForm("Login", "Home", FormMethod.Post))
-        {
-            
-                    <font size="4">Login</font>
-                        @Html.LabelFor(model => model.UserName)
-                        @Html.EditorFor(model => model.UserName)
-                        @Html.LabelFor(model => model.Password)
-                        @Html.EditorFor(model => model.Password)
-                        
-                        <label class="field-validation-error">@Html.DisplayFor(model => model.ErrorMessage)</label>
-                        <input type="submit" class="btn btn-info" name="name" value="Login" />
-                  
-                  
-        }
+    <form action="Login" method="post" class="login">
+
+        <h1 class="login-title">Login</h1>
+
+        
+            <input type="text" class="login-input" id="UserName" name="UserName" value="" placeholder="Username" autofocus>
+        
+
+            <input type="password" class="login-input" id="Password" name="Password" value="" placeholder="Password" autofocus>
+       
+
+        <label class="field-validation-error">@Html.DisplayFor(model => model.ErrorMessage)</label>
+        <input type="submit" class="login-button" name="name" value="Login" />
+
+    </form>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 </body>
 </html>
