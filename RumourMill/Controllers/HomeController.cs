@@ -108,7 +108,14 @@ namespace RumourMill.Controllers
             {
 
                 var question = db.Set<Question>();
-                question.Add(new Question { QuestionText = questionText, IsApproved = false, IsAnswered = false, TimeAsked=DateTime.Now});
+
+                question.Add(new Question
+                {
+                    QuestionText = questionText,
+                    IsApproved = false,
+                    IsAnswered = false,
+                    TimeAsked = DateTime.Now
+                });
 
                 if (string.IsNullOrEmpty(questionText))
                 {
@@ -125,8 +132,6 @@ namespace RumourMill.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-
-                
             }
         }
         
@@ -247,7 +252,7 @@ namespace RumourMill.Controllers
                         userType = "Leader";
                     }
                     else if (leaderModel.UserName == "swilliams" ||
-                        leaderModel.UserName == "dcallaghan")
+                        leaderModel.UserName == "dcallaghan" || leaderModel.UserName == "amorgan" || leaderModel.UserName == "emcginty")
                     {
                         userType = "SuperAdmin";
                     }

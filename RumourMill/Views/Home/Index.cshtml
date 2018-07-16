@@ -8,7 +8,7 @@
 <div class="topbar">
     @if (@User.Identity.IsAuthenticated)
     {
-        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/Logout">Logout</a></p>
+        <p class="welcometext">Welcome, <span class="name">@User.Identity.GetUserId() </span> &#124 <a href="/Home/Logout">Logout</a></p>
     }
     @if (!@User.Identity.IsAuthenticated)
     {
@@ -32,7 +32,7 @@
 
 <div class="container body-content">
 
-    @for (int i = 0, p = 0, q = 0; i < Model[0].questionCount.Count; i++)
+    @for (int i = 0, p = 0; i < Model[0].questionCount.Count; i++)
     {
         //q += Model[0].questionCount[i];
         //if (Model[0].questionCount[i] > 1)
@@ -135,5 +135,10 @@
         }
         p = p + Model[0].questionCount[i];
 
+        if(Model[0].questionCount[i]==0)
+        {
+            p++;
+        }
+        
     }
 </div>
