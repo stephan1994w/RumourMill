@@ -4,10 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5532e5b35b2547e2a943a1cb1a5f11d6" Name="Diagram1">
-        <EntityTypeShape EntityType="RumourMillMainModel.Leader" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="RumourMillMainModel.Question" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="RumourMillMainModel.Reply" Width="1.5" PointX="5.25" PointY="1.25" />
+      <Diagram DiagramId="b3fecba3b663464187cb7e65d42ed8f9" Name="Diagram1">
+        <EntityTypeShape EntityType="RumourMill_dbModel.Leader" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RumourMill_dbModel.Question" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="RumourMill_dbModel.Reply" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

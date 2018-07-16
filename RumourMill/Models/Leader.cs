@@ -19,6 +19,5 @@ namespace RumourMill.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public string Image { get; set; }
-        public string ErrorMessage { get; set; }
     }
 }

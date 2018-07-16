@@ -13,10 +13,10 @@ namespace RumourMill.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class RumourMillMainEntities : DbContext
+    public partial class RumourMillEntities : DbContext
     {
-        public RumourMillMainEntities()
-            : base("name=RumourMillMainEntities")
+        public RumourMillEntities()
+            : base("name=RumourMillEntities")
         {
         }
     

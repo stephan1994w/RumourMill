@@ -14,7 +14,7 @@ namespace RumourMill.Controllers
 {
     public class HomeController : Controller
     {
-        private RumourMillMainEntities db = new RumourMillMainEntities();
+        private RumourMillEntities db = new RumourMillEntities();
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -230,7 +230,7 @@ namespace RumourMill.Controllers
             {
                 return View(leaderModel); //Returns the view with the input values so that the user doesn't have to retype again
             }
-            using (RumourMillMainEntities db = new RumourMillMainEntities())
+            using (RumourMillEntities db = new RumourMillEntities())
             {
                 // hash the password and compare against database
                 var hashedPassword = Sha256encrypt(leaderModel.Password);
@@ -276,7 +276,6 @@ namespace RumourMill.Controllers
                 else
                 {
                     //User authentication failed
-                    leaderModel.ErrorMessage = "Invalid Credentials Supplied. Please try again.";
                 }
                 
             }
