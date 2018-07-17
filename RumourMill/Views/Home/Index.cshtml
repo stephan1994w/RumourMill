@@ -43,7 +43,7 @@
         //}
 
 
-        if (@Model[0].qrvmodel[p].IsApproved || (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+        if (@Model[0].qrvmodel[p].Status == "Approved" || (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
         {
             <section class="cd-timeline js-cd-timeline">
                 <div class="cd-timeline__container">
@@ -52,13 +52,17 @@
                             <img src="../Content/question.svg" alt="Question">
                         </div>
 
-                        @if (@Model[0].qrvmodel[p].IsApproved && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
                         {
                             @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
                         }
-                        else if ((!@Model[0].qrvmodel[p].IsApproved) && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
                         {
                             @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
+                        }
+                        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        {
+                            @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
                         }
                         else
                         {

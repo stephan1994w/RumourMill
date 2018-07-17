@@ -16,7 +16,7 @@ namespace RumourMill.Models
     {
         public int QuestionId { get; set; }
         public string QuestionText { get; set; }
-        public bool IsApproved { get; set; }
+        public string Status { get; set; }
         public bool IsAnswered { get; set; }
         public Nullable<System.DateTime> TimeAsked { get; set; }
     }

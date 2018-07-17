@@ -225,6 +225,17 @@ header h1 {
         border-right: 7px solid #ffd3d3 !important;
     }
 
+
+.cd-timeline__content-submitted {
+    background: #ffd196 !important;
+}
+
+
+    .cd-timeline__content-submitted::before {
+        /* triangle next to content block */
+        border-right: 7px solid #ffd196 !important;
+    }
+
 .cd-timeline__content h2 {
   color: #303e49;
 }

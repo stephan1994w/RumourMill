@@ -29,7 +29,7 @@ namespace RumourMill.Controllers
                                       select new
                                       {
                                           qText = x.QuestionText,
-                                          qApproved = x.IsApproved,
+                                          qStatus = x.Status,
                                           qAnswered = x.IsAnswered,
                                           qID = x.QuestionId,
                                           qTime = x.TimeAsked,
@@ -45,7 +45,7 @@ namespace RumourMill.Controllers
                 QRModel.Add(new QuestionReplyViewModel()
                 {
                     QuestionText = joinedItem.qText,
-                    IsApproved = joinedItem.qApproved,
+                    Status = joinedItem.qStatus,
                     IsAnswered = joinedItem.qAnswered,
                     QuestionId = joinedItem.qID,
                     TimeAsked = joinedItem.qTime ?? DateTime.Now,
@@ -112,7 +112,7 @@ namespace RumourMill.Controllers
                 question.Add(new Question
                 {
                     QuestionText = questionText,
-                    IsApproved = false,
+                    Status = "Submitted",
                     IsAnswered = false,
                     TimeAsked = DateTime.Now
                 });
@@ -176,7 +176,7 @@ namespace RumourMill.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).IsApproved = true;
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).Status = "Approved";
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
@@ -198,7 +198,7 @@ namespace RumourMill.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).IsApproved = false;
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == fk_QuestionId).Status = "Rejected";
                     db.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
