@@ -106,7 +106,12 @@ namespace RumourMill.Controllers
 
             using (db)
             {
+                DateTime currentTime;
 
+
+                //FOR BST
+                currentTime = DateTime.Now;
+                currentTime.AddHours(1);
                 var question = db.Set<Question>();
 
                 question.Add(new Question
@@ -114,7 +119,7 @@ namespace RumourMill.Controllers
                     QuestionText = questionText,
                     Status = "Submitted",
                     IsAnswered = false,
-                    TimeAsked = DateTime.Now
+                    TimeAsked = currentTime
                 });
 
                 if (string.IsNullOrEmpty(questionText))
