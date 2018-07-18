@@ -101,15 +101,15 @@ namespace RumourMill.Controllers
 
 
 
-            if (User.Identity.IsAuthenticated)
-            {
-                DateTime currentTime;
-                //FOR BST
-                currentTime = DateTime.Now;
-                currentTime.AddHours(1);
-                db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
-                db.SaveChanges();
-            }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    DateTime currentTime;
+            //    //FOR BST
+            //    currentTime = DateTime.Now;
+            //    currentTime.AddHours(1);
+            //    db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
+            //    db.SaveChanges();
+            //}
 
             return View(model);
         }
@@ -122,7 +122,6 @@ namespace RumourMill.Controllers
             using (db)
             {
                 DateTime currentTime;
-
 
                 //FOR BST
                 currentTime = DateTime.Now;
@@ -324,5 +323,7 @@ namespace RumourMill.Controllers
             byte[] hashedDataBytes = sha256hasher.ComputeHash(encoder.GetBytes(phrase));
             return Convert.ToBase64String(hashedDataBytes);
         }
+
+        
     }
 }

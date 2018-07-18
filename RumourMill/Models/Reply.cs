@@ -19,5 +19,6 @@ namespace RumourMill.Models
         public int fk_LeaderId { get; set; }
         public string ReplyText { get; set; }
         public Nullable<System.DateTime> TimeReplied { get; set; }
+        public string TimeAgo { get; set; }
     }
 }

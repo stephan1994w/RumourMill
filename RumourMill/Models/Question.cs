@@ -19,5 +19,6 @@ namespace RumourMill.Models
         public string Status { get; set; }
         public bool IsAnswered { get; set; }
         public Nullable<System.DateTime> TimeAsked { get; set; }
+        public string TimeAgo { get; set; }
     }
 }

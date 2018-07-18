@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b3fecba3b663464187cb7e65d42ed8f9" Name="Diagram1">
-        <EntityTypeShape EntityType="RumourMill_dbModel.Reply" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RumourMill_dbModel.Question" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="RumourMill_dbModel.Leader" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="RumourMill_dbModel.Question" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="RumourMill_dbModel.Reply" Width="1.5" PointX="5.125" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

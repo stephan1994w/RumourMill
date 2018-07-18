@@ -249,6 +249,8 @@
     <Content Include="App_Data\RumourMillMain_log.ldf">
       <DependentUpon>RumourMillMain.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\alison.png" />
+    <Content Include="Content\amanda.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -256,9 +258,13 @@
     <Content Include="Content\component.css" />
     <Content Include="Content\default.css" />
     <Content Include="Content\demo.css" />
+    <Content Include="Content\duncan.png" />
+    <Content Include="Content\honor.png" />
+    <Content Include="Content\michelle.png" />
     <Content Include="Content\question.svg" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\user.png" />
     <Content Include="favicon.ico" />
     <Content Include="App_Start\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
