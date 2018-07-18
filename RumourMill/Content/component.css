@@ -10,7 +10,6 @@
     cursor: pointer;
     padding: 10px 50px;
     display: inline-block;
-    margin: 15px 0px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
@@ -217,7 +216,7 @@
     color: #007c0e;
 }
 
-.approve:hover, .reject:active {
+.approve:hover, .approve:active {
     color: white;
     background: #007c0e;
 }

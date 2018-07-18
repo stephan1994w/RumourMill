@@ -67,7 +67,7 @@ header h1 {
   width: 90%;
   max-width: 1170px;
   margin: 0 auto;
-  padding: 2em 0;
+  padding: 1em 0;
 }
 
 .cd-timeline__container::before {
@@ -78,7 +78,7 @@ header h1 {
   left: 18px;
   height: 100%;
   width: 4px;
-  background: #d7e4ed;
+  /*background: #d7e4ed;*/
 }
 
 

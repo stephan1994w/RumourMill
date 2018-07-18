@@ -1,7 +1,7 @@
 ﻿@{
     /**/
 
-    ViewBag.Title = "The Rumour Mill";
+    ViewBag.Title = "The Grapevine";
 }
 @using Microsoft.AspNet.Identity
 
@@ -111,8 +111,26 @@
     </form>
 </div>
 
+
+<div class="cta filter" style="text-align: center;">
+
+    @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+    {
+        <a class="unmoderated buttonNew btn-1 btn-1a" data-filter="Submitted" href="#" role="button">Unmoderated</a>
+        <a class="approved buttonNew btn-1 btn-1a" data-filter="Approved" href="#" role="button">Approved</a>
+        <a class="rejected buttonNew btn-1 btn-1a" data-filter="Rejected" href="#" role="button">Rejected</a>
+    }
+    else
+    {
+
+        <a class="all buttonNew btn-1 btn-1a active" data-filter="all" href="#" role="button">Show All</a>
+        <a class="unanswered buttonNew btn-1 btn-1a" data-filter="Unanswered" href="#" role="button">Unanswered</a>
+        <a class="answered buttonNew btn-1 btn-1a" data-filter="Answered" href="#" role="button">Answered</a>
+    }
+</div>
+
 <div class="container body-content">
-    
+
     @for (int i = 0, p = 0; i < Model[0].questionCount.Count; i++)
     {
         //q += Model[0].questionCount[i];
@@ -183,42 +201,42 @@
                         }
                         <div id="blank"></div>
                     </div>
-                @Html.Raw("</div>")<!-- Question -->
-                @if (Model[0].qrvmodel[p].IsAnswered)
-                {
-                    //int jHold=0;
-
-                    for (int j = Model[0].questionCount[i]-1; j >= 0; j--)
+                    @Html.Raw("</div>")<!-- Question -->
+                    @if (Model[0].qrvmodel[p].IsAnswered)
                     {
-                        <div class="cd-timeline__block js-cd-block timeline-reply">
+                        //int jHold=0;
 
-                            <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img" style="background-image:url(../Content/@Model[0].qrvmodel[p+j].Image)">
+                        for (int j = Model[0].questionCount[i] - 1; j >= 0; j--)
+                        {
+                            <div class="cd-timeline__block js-cd-block timeline-reply">
 
-                            </div>
+                                <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img" style="background-image:url(../Content/@Model[0].qrvmodel[p+j].Image)">
 
-                            <div class="leadername">
-                                @Model[0].qrvmodel[p + j].LeaderName
-                            </div>
-                            <div class="cd-timeline__content reply-frame">
+                                </div>
 
-                                <p class="innertext reply-align">
-                                    @Model[0].qrvmodel[p + j].ReplyText
-                                </p>
-                                <span class="cd-timeline__date reply-align"> @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)</span>
-                            </div> <!-- cd-timeline__content -->
-                        </div> <!-- Reply -->
+                                <div class="leadername">
+                                    @Model[0].qrvmodel[p + j].LeaderName
+                                </div>
+                                <div class="cd-timeline__content reply-frame">
+
+                                    <p class="innertext reply-align">
+                                        @Model[0].qrvmodel[p + j].ReplyText
+                                    </p>
+                                    <span class="cd-timeline__date reply-align"> @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)</span>
+                                </div> <!-- cd-timeline__content -->
+                            </div> <!-- Reply -->
+                        }
+                        //jHold += j;
+                        // i = i + Model[0].questionCount[i] - 1;
+                        // continue;
+
                     }
-                    //jHold += j;
-                    // i = i + Model[0].questionCount[i] - 1;
-                    // continue;
-
-                }
-        </div>
-        </section> <!-- cd-timeline -->
+                </div>
+            </section> <!-- cd-timeline -->
 
         }
 
-        if(Model[0].questionCount[i]==0)
+        if (Model[0].questionCount[i] == 0)
         {
             p++;
         }
