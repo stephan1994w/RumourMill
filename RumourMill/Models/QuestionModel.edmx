@@ -14,6 +14,8 @@
           <Property Name="UserName" Type="varchar(max)" Nullable="false" />
           <Property Name="Password" Type="varchar(max)" Nullable="false" />
           <Property Name="Image" Type="varchar(max)" />
+          <Property Name="Role" Type="varchar(max)" />
+          <Property Name="LastAccess" Type="datetime" />
         </EntityType>
         <EntityType Name="Questions">
           <Key>
@@ -44,16 +46,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="RumourMill_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Leader">
-          <Key>
-            <PropertyRef Name="LeaderId" />
-          </Key>
-          <Property Name="LeaderId" Type="Int32" Nullable="false" />
-          <Property Name="LeaderName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Reply">
           <Key>
             <PropertyRef Name="ReplyID" />
@@ -65,9 +57,9 @@
           <Property Name="TimeReplied" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityContainer Name="RumourMillEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Leaders" EntityType="Self.Leader" />
           <EntitySet Name="Replies" EntityType="Self.Reply" />
           <EntitySet Name="Questions" EntityType="RumourMill_dbModel.Question" />
+          <EntitySet Name="Leaders" EntityType="RumourMill_dbModel.Leader" />
         </EntityContainer>
         <EntityType Name="Question">
           <Key>
@@ -79,23 +71,24 @@
           <Property Name="IsAnswered" Type="Boolean" Nullable="false" />
           <Property Name="TimeAsked" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Leader">
+          <Key>
+            <PropertyRef Name="LeaderId" />
+          </Key>
+          <Property Name="LeaderId" Type="Int32" Nullable="false" />
+          <Property Name="LeaderName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastAccess" Type="DateTime" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="RumourMill_dbModelStoreContainer" CdmEntityContainer="RumourMillEntities">
-          <EntitySetMapping Name="Leaders">
-            <EntityTypeMapping TypeName="RumourMill_dbModel.Leader">
-              <MappingFragment StoreEntitySet="Leaders">
-                <ScalarProperty Name="LeaderId" ColumnName="LeaderId" />
-                <ScalarProperty Name="LeaderName" ColumnName="LeaderName" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Replies">
             <EntityTypeMapping TypeName="RumourMill_dbModel.Reply">
               <MappingFragment StoreEntitySet="Replies">
@@ -115,6 +108,19 @@
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
                 <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leaders">
+            <EntityTypeMapping TypeName="RumourMill_dbModel.Leader">
+              <MappingFragment StoreEntitySet="Leaders">
+                <ScalarProperty Name="LastAccess" ColumnName="LastAccess" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="LeaderName" ColumnName="LeaderName" />
+                <ScalarProperty Name="LeaderId" ColumnName="LeaderId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

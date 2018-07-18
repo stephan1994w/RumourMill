@@ -90,11 +90,26 @@ namespace RumourMill.Controllers
                 }
                 
             }
+
+            QRModel.Reverse();
+            qCount.Reverse();
             model.Add(new QContainer()
             {
                 qrvmodel = QRModel,
                 questionCount = qCount
             });
+
+
+
+            if (User.Identity.IsAuthenticated)
+            {
+                DateTime currentTime;
+                //FOR BST
+                currentTime = DateTime.Now;
+                currentTime.AddHours(1);
+                db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
+                db.SaveChanges();
+            }
 
             return View(model);
         }
@@ -139,9 +154,9 @@ namespace RumourMill.Controllers
                 }
             }
         }
-        
+
         // allow only SuperAdmin and Leader to reply
-        [Authorize(Users = "SuperAdmin, Leader")]
+        [Authorize(Roles = "Leader, SuperAdmin")]
         public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderId)
         {
 
@@ -173,7 +188,7 @@ namespace RumourMill.Controllers
         }
 
         // allow only SuperAdmin and Moderator to accept questions
-        [Authorize(Users = "SuperAdmin, Moderator")]
+        [Authorize(Roles = "Moderator, SuperAdmin")]
         public ActionResult AcceptQuestion(int fk_QuestionId)
         {
 
@@ -195,7 +210,7 @@ namespace RumourMill.Controllers
         }
 
         // allow only SuperAdmin and Moderator to accept questions
-        [Authorize(Users = "SuperAdmin, Moderator")]
+        [Authorize(Roles = "Moderator, SuperAdmin")]
         public ActionResult RejectQuestion(int fk_QuestionId)
         {
 
@@ -214,16 +229,6 @@ namespace RumourMill.Controllers
 
 
             }
-        }
-
-
-
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
         }
 
         [AllowAnonymous]
@@ -245,33 +250,35 @@ namespace RumourMill.Controllers
                 // hash the password and compare against database
                 var hashedPassword = Sha256encrypt(leaderModel.Password);
                 var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == hashedPassword).FirstOrDefault();
+
                 if (leaderDetails != null)
                 {
 
-                    var userType = "";
-                    if (leaderModel.UserName == "hmallon" ||
-                    leaderModel.UserName == "ablair" ||
-                    leaderModel.UserName == "dwardley"
-                    )
-                    {
-                        userType = "Leader";
-                    }
-                    else if (leaderModel.UserName == "swilliams" ||
-                        leaderModel.UserName == "dcallaghan" || leaderModel.UserName == "amorgan" || leaderModel.UserName == "emcginty")
-                    {
-                        userType = "SuperAdmin";
-                    }
-                    else if (leaderModel.UserName == "mnorman" || 
-                        leaderModel.UserName == "aohara")
-                    {
-                        userType = "Moderator";
-                    }
-
+                    //var userType = "";
+                    //if (leaderModel.UserName == "hmallon" ||
+                    //leaderModel.UserName == "ablair" ||
+                    //leaderModel.UserName == "dwardley"
+                    //)
+                    //{
+                    //    userType = "Leader";
+                    //}
+                    //else if (leaderModel.UserName == "swilliams" ||
+                    //    leaderModel.UserName == "dcallaghan" || leaderModel.UserName == "amorgan" || leaderModel.UserName == "emcginty")
+                    //{
+                    //    userType = "SuperAdmin";
+                    //}
+                    //else if (leaderModel.UserName == "mnorman" || 
+                    //    leaderModel.UserName == "aohara")
+                    //{
+                    //    userType = "Moderator";
+                    //}
                     var identity = new ClaimsIdentity(new[] {
-                 new Claim(ClaimTypes.Name, userType)
-                 // --> add as many claims as you need
-                    }, "ApplicationCookie");
-                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString()));
+                         new Claim(ClaimTypes.Role, leaderDetails.Role),
+                         new Claim(ClaimTypes.Name, leaderDetails.LeaderName),
+                         new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString())
+                    }, 
+                        "ApplicationCookie");
+
                     // get owin context
                     var ctx = Request.GetOwinContext();
                     // get authentication manager
@@ -279,6 +286,8 @@ namespace RumourMill.Controllers
                     //sign in as claimed identity- in this case the admin
                     //A user is authenticated by calling AuthenticationManager.SignIn
                     authManager.SignIn(identity);
+
+                    
                     //User is authenticated and redirected
                     return RedirectToAction("Index", "Home");
 
@@ -294,6 +303,7 @@ namespace RumourMill.Controllers
         }
 
         // log the user out.
+        [AllowAnonymous]
         public ActionResult LogOut()
         {
             // get owin context
@@ -305,14 +315,8 @@ namespace RumourMill.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
         //method to hash the password using SHA256 encryption
+        [AllowAnonymous]
         public static string Sha256encrypt(string phrase)
         {
             UTF8Encoding encoder = new UTF8Encoding();

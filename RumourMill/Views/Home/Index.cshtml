@@ -8,7 +8,8 @@
 <div class="topbar">
     @if (@User.Identity.IsAuthenticated)
     {
-        <p class="welcometext">Welcome, <span class="name">@User.Identity.GetUserId() </span> &#124 <a href="/Home/Logout">Logout</a></p>
+        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/Logout">Logout</a></p>
+
     }
     @if (!@User.Identity.IsAuthenticated)
     {
@@ -16,7 +17,7 @@
             <a href="/Home/Login">Login</a>
         </div>
     }
-    
+
 </div>
 <div class="question-header">
 
@@ -31,7 +32,7 @@
 </div>
 
 <div class="container body-content">
-
+    
     @for (int i = 0, p = 0; i < Model[0].questionCount.Count; i++)
     {
         //q += Model[0].questionCount[i];
@@ -43,7 +44,7 @@
         //}
 
 
-        if (@Model[0].qrvmodel[p].Status == "Approved" || (User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+        if (@Model[0].qrvmodel[p].Status == "Approved" || (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
         {
             <section class="cd-timeline js-cd-timeline">
                 <div class="cd-timeline__container">
@@ -52,15 +53,15 @@
                             <img src="../Content/question.svg" alt="Question">
                         </div>
 
-                        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
                         {
                             @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
                         }
-                        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
                         {
                             @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
                         }
-                        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin"))
+                        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
                         {
                             @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
                         }
@@ -75,7 +76,7 @@
 
                         <span class="cd-timeline__date">@Model[0].qrvmodel[p].TimeAsked</span>
 
-                        @if (@User.Identity.Name == "Leader" || @User.Identity.Name == "SuperAdmin")
+                        @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
                         {
                             <form action="~/Home/SaveReply" method="POST">
                                 <textarea type="text" placeholder="Enter your reply here" class="replyTextArea" name="replyText"></textarea> <br />
@@ -84,7 +85,7 @@
                                 <button type="submit" class="submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
                             </form>
                         }
-                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
+                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
                         {
                             <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
                                 <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
@@ -92,7 +93,7 @@
                                 <button type="submit" class="approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
                             </form>
                         }
-                        @if (@User.Identity.Name == "Moderator" || @User.Identity.Name == "SuperAdmin")
+                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
                         {
                             <form action="~/Home/RejectQuestion" class="buttons" method="POST">
                                 <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
@@ -107,7 +108,7 @@
                 {
                     //int jHold=0;
 
-                    for (int j = 0; j < Model[0].questionCount[i]; j++)
+                    for (int j = Model[0].questionCount[i]-1; j >= 0; j--)
                     {
                         <div class="cd-timeline__block js-cd-block timeline-reply">
 
@@ -137,12 +138,15 @@
         </section> <!-- cd-timeline -->
 
         }
-        p = p + Model[0].questionCount[i];
 
         if(Model[0].questionCount[i]==0)
         {
             p++;
         }
-        
+        else
+        {
+            p = p + Model[0].questionCount[i];
+        }
+
     }
 </div>
