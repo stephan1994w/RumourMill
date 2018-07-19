@@ -104,11 +104,10 @@
 
     <h1>The Rumour Mill</h1>
 
-    <br />
     Have a question you've heard that you think needs answered? Submit it here.
     <form action="~/Home/Save" method="POST">
         <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
-        <button type="submit" class="buttonNew btn-1 btn-1a" value="Submit">SUBMIT</button>
+        <button type="submit" class="buttonNew btn-1 btn-1a submitButton" value="Submit">SUBMIT</button>
     </form>
 </div>
 
@@ -117,20 +116,19 @@
 
     @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
     {
-        <a class="unmoderated buttonNew btn-1 btn-1a" data-filter="Submitted" href="#" role="button">Unmoderated</a>
-        <a class="approved buttonNew btn-1 btn-1a" data-filter="Approved" href="#" role="button">Approved</a>
-        <a class="rejected buttonNew btn-1 btn-1a" data-filter="Rejected" href="#" role="button">Rejected</a>
-    }
-    else
-    {
 
-        <a class="all buttonNew btn-1 btn-1a active" data-filter="all" href="#" role="button">Show All</a>
-        <a class="unanswered buttonNew btn-1 btn-1a" data-filter="Unanswered" href="#" role="button">Unanswered</a>
-        <a class="answered buttonNew btn-1 btn-1a" data-filter="Answered" href="#" role="button">Answered</a>
+        <a class="unmod filterButton buttonNew btn-1 btn-1a" data-filter="Submitted" role="button">Unmoderated</a>
+        <a class="app filterButton buttonNew btn-1 btn-1a" data-filter="Approved" role="button">Approved</a>
+        <a class="rej filterButton buttonNew btn-1 btn-1a" data-filter="Rejected" role="button">Rejected</a>
     }
+
+    <a class="all filterButton buttonNew btn-1 btn-1a" data-filter="all" role="button">Show All</a>
+    <a class="unans filterButton buttonNew btn-1 btn-1a" data-filter="Unanswered" role="button">Unanswered</a>
+    <a class="ans filterButton buttonNew btn-1 btn-1a" data-filter="Answered" role="button">Answered</a>
+
 </div>
 
-<div class="container body-content">
+<div class="container body-content mainparent">
 
     @for (int i = 0, p = 0; i < Model[0].questionCount.Count; i++)
     {
@@ -145,35 +143,58 @@
 
         if (@Model[0].qrvmodel[p].Status == "Approved" || (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
         {
-            <section class="cd-timeline js-cd-timeline">
-                <div class="cd-timeline__container">
-                    <div class="cd-timeline__block js-cd-block">
-                        <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
-                            <img src="../Content/question.svg" alt="Question">
-                        </div>
 
-                        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                        {
-                            @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
-                        }
-                        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                        {
-                            @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
-                        }
-                        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                        {
-                            @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
-                        }
-                        else
-                        {
-                            @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
-                        }
+            @Html.Raw("<div class='cd-timeline__container")
 
-                        <p class="innertext">
-                            @Model[0].qrvmodel[p].QuestionText
-                        </p>
+            if (Model[0].qrvmodel[p].Status == "Approved")
+            {
+                @Html.Raw(" approved")
+            }
+            else if (Model[0].qrvmodel[p].Status == "Rejected")
+            {
+                @Html.Raw(" rejected")
+            }
+            else
+            {
+                @Html.Raw(" unmoderated")
+            }
 
-                        <span class="cd-timeline__date">@GetPrettyDate(@Model[0].qrvmodel[p].TimeAsked)</span>
+            if (Model[0].qrvmodel[p].IsAnswered)
+            {
+                @Html.Raw(" answered")
+            }
+            else
+            {
+                @Html.Raw(" unanswered")
+            }
+            @Html.Raw("'>")
+            <div class="cd-timeline__block js-cd-block">
+                <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+                    <img src="../Content/question.svg" alt="Question">
+                </div>
+
+                @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
+                }
+                else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
+                }
+                else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
+                }
+                else
+                {
+                    @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
+                }
+
+                <p class="innertext">
+                    @Model[0].qrvmodel[p].QuestionText
+                </p>
+
+                <span class="cd-timeline__date">@GetPrettyDate(@Model[0].qrvmodel[p].TimeAsked)</span>
 
                         @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
                         {
@@ -220,33 +241,32 @@
                     {
                         //int jHold=0;
 
-                        for (int j = Model[0].questionCount[i] - 1; j >= 0; j--)
-                        {
-                            <div class="cd-timeline__block js-cd-block timeline-reply">
+                for (int j = Model[0].questionCount[i] - 1; j >= 0; j--)
+                {
+                    <div class="cd-timeline__block js-cd-block timeline-reply">
 
-                                <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img" style="background-image:url(../Content/@Model[0].qrvmodel[p+j].Image)">
+                        <div class="cd-timeline__img cd-timeline__img--movie js-cd-img reply-img" style="background-image:url(../Content/@Model[0].qrvmodel[p+j].Image)">
 
-                                </div>
+                        </div>
 
-                                <div class="leadername">
-                                    @Model[0].qrvmodel[p + j].LeaderName
-                                </div>
-                                <div class="cd-timeline__content reply-frame">
+                        <div class="leadername">
+                            @Model[0].qrvmodel[p + j].LeaderName
+                        </div>
+                        <div class="cd-timeline__content reply-frame">
 
-                                    <p class="innertext reply-align">
-                                        @Model[0].qrvmodel[p + j].ReplyText
-                                    </p>
-                                    <span class="cd-timeline__date reply-align"> @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)</span>
-                                </div> <!-- cd-timeline__content -->
-                            </div> <!-- Reply -->
-                        }
-                        //jHold += j;
-                        // i = i + Model[0].questionCount[i] - 1;
-                        // continue;
+                            <p class="innertext reply-align">
+                                @Model[0].qrvmodel[p + j].ReplyText
+                            </p>
+                            <span class="cd-timeline__date reply-align"> @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)</span>
+                        </div> <!-- cd-timeline__content -->
+                    </div> <!-- Reply -->
+                }
+                //jHold += j;
+                // i = i + Model[0].questionCount[i] - 1;
+                // continue;
 
-                    }
-                </div>
-            </section> <!-- cd-timeline -->
+            }
+            @Html.Raw("</div>")
 
         }
 
@@ -260,11 +280,29 @@
         }
 
     }
+
+
 </div>
-<script>
-    //$("#editButton").click(function () {
-    //    $("#editQuestion").show();
-    //});
+<script type="text/javascript">
 
-
+    @if(@User.IsInRole("Moderator"))
+    {
+        @: $(".approved").fadeOut();
+        @: $(".rejected").fadeOut();
+        @: $(".unmoderated").fadeIn();
+        @: $(".unmod").addClass("active");
+        @: $(".unmod").click();
+    }
+    else
+    {
+        @: $(".all").addClass("active");
+    }
 </script>
+<div class="noquestions"><h1>No additional results found.</h1></div>
+<div class="spacer" style="height:50px"></div>
+<div class="modal-footer footer topbar">
+
+    <p class="welcometext footertext">Created by Stephan Williams & Daniel Callaghan</p>
+
+
+</div>

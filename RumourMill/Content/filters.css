@@ -1,4 +1,9 @@
-﻿
+﻿.noquestions {
+    padding-top:10px;
+    text-align: center;
+    vertical-align: middle;
+    position:relative;
+}
 .filter {
     color: black;
 }
