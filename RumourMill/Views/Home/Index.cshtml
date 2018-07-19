@@ -86,31 +86,99 @@
 
 }
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<div class="topbar">
-    @if (@User.Identity.IsAuthenticated)
+<div class="topwrap">
+    <div class="topbar">
+        @if (@User.Identity.IsAuthenticated)
+        {
+            <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/Logout">Logout</a></p>
+
+        }
+        @if (!@User.Identity.IsAuthenticated)
+        {
+            <div class="welcometext">
+                <a href="/Home/Login">Login</a>
+            </div>
+        }
+
+    </div>
+    <div class="question-header">
+
+        <h1>The Grapevine</h1>
+
+        Have a question you've heard that you think needs answered? Submit it here.
+        <form action="~/Home/Save" method="POST">
+            <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
+            <button type="submit" class="buttonNew btn-1 btn-1a submitButton" value="Submit">SUBMIT</button>
+        </form>
+    </div>
+    <div class="botbar"></div>
+</div>
+
+@* Mod modal button *@
+<a id="modBtn" class="float">
+    <i class="fa fa-info my-float"></i>
+</a>
+<div class="label-container">
+    <div class="label-text">Moderator Guidance</div>
+</div>
+
+
+@* General modal button *@
+<a id="genBtn" class="float">
+    <i class="fa fa-info my-float"></i>
+</a>
+<div class="label-container">
+    <div class="label-text">General Guidance</div>
+</div>
+
+
+    <script type="text/javascript">
+
+    @if (@User.IsInRole("Moderator"))
     {
-        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/Logout">Logout</a></p>
+        @: $("#genBtn").hide();
+    }
+    else
+    {
+        @: $("#modBtn").hide();
 
     }
-    @if (!@User.Identity.IsAuthenticated)
-    {
-        <div class="welcometext">
-            <a href="/Home/Login">Login</a>
+    </script>
+
+
+<!-- The Modal -->
+<div id="modModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modClose">&times;</span>
+            <h2>Moderator Guidance</h2>
         </div>
-    }
+        <div class="modal-body">
+            <p>Insert moderator guidance text here</p>
+            <p>Insert moderator guidance text here</p>
+        </div>
+    </div>
 
 </div>
-<div class="question-header">
 
-    <h1>The Rumour Mill</h1>
+<!-- The Modal -->
+<div id="genModal" class="modal">
 
-    Have a question you've heard that you think needs answered? Submit it here.
-    <form action="~/Home/Save" method="POST">
-        <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
-        <button type="submit" class="buttonNew btn-1 btn-1a submitButton" value="Submit">SUBMIT</button>
-    </form>
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="genClose">&times;</span>
+            <h2>General Guidance</h2>
+        </div>
+        <div class="modal-body">
+            <p>Insert general guidance text here</p>
+            <p>Insert general guidance text here</p>
+        </div>
+    </div>
+
 </div>
-
 
 <div class="cta filter" style="text-align: center;">
 
@@ -196,50 +264,52 @@
 
                 <span class="cd-timeline__date">@GetPrettyDate(@Model[0].qrvmodel[p].TimeAsked)</span>
 
-                        @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
-                        {
-                            <form action="~/Home/SaveReply" method="POST">
-                                <textarea type="text" placeholder="Enter your reply here" class="replyTextArea" name="replyText"></textarea> <br />
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <input type="hidden" name="fk_LeaderId" value="@User.Identity.GetUserId()" />
-                                <button type="submit" class="submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
-                            </form>
-                        }
-                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
-                        {
-                            <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <input type="hidden" name="IsApproved" value="True" />
-                                <button type="submit" class="approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
-                            </form>
-                        }
-                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
-                        {
-                            <form action="~/Home/RejectQuestion" class="buttons" method="POST">
-                                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                <input type="hidden" name="IsApproved" value="False" />
-                                <button type="submit" class="reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
-                            </form>
-                        }
-                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
-                        {
-                                <form action="~/Home/EditQuestion" class="buttons" method="POST">
-                                    <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                                    <input type="hidden" name="IsApproved" value="True" />
-                                    <input type="hidden" name="user" value="@User.Identity.Name" />
-                                    <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
-                                    <br />
-                                    <textarea type="text" value="@Model[0].qrvmodel[p].QuestionText" name="editText"></textarea> <br />
-                                    <input type="text" placeholder="Enter your reason here" name="reason" />
-                                    <button type="submit" class="approve buttonNew btn-1 btn-1a" value="Submit">Edit and Approve</button>
-                                </form>
-                        }
-                        <div id="blank"></div>
+                @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
+                {
+                    <form action="~/Home/SaveReply" method="POST">
+                        <textarea type="text" placeholder="Enter your reply here" class="replyTextArea" name="replyText"></textarea> <br />
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <input type="hidden" name="fk_LeaderId" value="@User.Identity.GetUserId()" />
+                        <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
+                    </form>
+                }
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
+                {
+                    <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <input type="hidden" name="IsApproved" value="True" />
+                        <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
+                    </form>
+                }
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
+                {
+                    <form action="~/Home/RejectQuestion" class="buttons" method="POST">
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <input type="hidden" name="IsApproved" value="False" />
+                        <button type="submit" class="formButton reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
+                    </form>
+                }
+                @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")) && @Model[0].qrvmodel[p].Status != "Approved")
+                {
+                    <div style="position:relative;clear: both;">
+                        <form action="~/Home/EditQuestion" class="editForm" method="POST">
+                            <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                            <input type="hidden" name="IsApproved" value="True" />
+                            <input type="hidden" name="user" value="@User.Identity.Name" />
+                            <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
+                            <br />
+                            <textarea type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText">@Model[0].qrvmodel[p].QuestionText</textarea> <br />
+                            <input type="text" class="edittextareas" placeholder="Enter your reason here" name="reason" /><br />
+                            <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
+                        </form>
                     </div>
-                    @Html.Raw("</div>")<!-- Question -->
-                    @if (Model[0].qrvmodel[p].IsAnswered)
-                    {
-                        //int jHold=0;
+                }
+                <div id="blank"></div>
+            </div>
+            @Html.Raw("</div>")<!-- Question -->
+            if (Model[0].qrvmodel[p].IsAnswered)
+            {
+                //int jHold=0;
 
                 for (int j = Model[0].questionCount[i] - 1; j >= 0; j--)
                 {
@@ -300,7 +370,7 @@
 </script>
 <div class="noquestions"><h1>No additional results found.</h1></div>
 <div class="spacer" style="height:50px"></div>
-<div class="modal-footer footer topbar">
+<div class="footer topbar">
 
     <p class="welcometext footertext">Created by Stephan Williams & Daniel Callaghan</p>
 

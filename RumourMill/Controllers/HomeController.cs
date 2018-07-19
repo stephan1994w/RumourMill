@@ -279,55 +279,40 @@ namespace RumourMill.Controllers
             using (RumourMillEntities db = new RumourMillEntities())
             {
                 // hash the password and compare against database
-                var hashedPassword = Sha256encrypt(leaderModel.Password);
-                var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == hashedPassword).FirstOrDefault();
+                if(!(leaderModel.UserName==null || leaderModel.Password == null))
+                { 
+                    var hashedPassword = Sha256encrypt(leaderModel.Password);
+                    var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == hashedPassword).FirstOrDefault();
+               
+                    if (leaderDetails != null)
+                    {
 
-                if (leaderDetails != null)
-                {
+                        var identity = new ClaimsIdentity(new[] {
+                             new Claim(ClaimTypes.Role, leaderDetails.Role),
+                             new Claim(ClaimTypes.Name, leaderDetails.LeaderName),
+                             new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString())
+                        }, 
+                            "ApplicationCookie");
 
-                    //var userType = "";
-                    //if (leaderModel.UserName == "hmallon" ||
-                    //leaderModel.UserName == "ablair" ||
-                    //leaderModel.UserName == "dwardley"
-                    //)
-                    //{
-                    //    userType = "Leader";
-                    //}
-                    //else if (leaderModel.UserName == "swilliams" ||
-                    //    leaderModel.UserName == "dcallaghan" || leaderModel.UserName == "amorgan" || leaderModel.UserName == "emcginty")
-                    //{
-                    //    userType = "SuperAdmin";
-                    //}
-                    //else if (leaderModel.UserName == "mnorman" || 
-                    //    leaderModel.UserName == "aohara")
-                    //{
-                    //    userType = "Moderator";
-                    //}
-                    var identity = new ClaimsIdentity(new[] {
-                         new Claim(ClaimTypes.Role, leaderDetails.Role),
-                         new Claim(ClaimTypes.Name, leaderDetails.LeaderName),
-                         new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString())
-                    }, 
-                        "ApplicationCookie");
-
-                    // get owin context
-                    var ctx = Request.GetOwinContext();
-                    // get authentication manager
-                    var authManager = ctx.Authentication;
-                    //sign in as claimed identity- in this case the admin
-                    //A user is authenticated by calling AuthenticationManager.SignIn
-                    authManager.SignIn(identity);
+                        // get owin context
+                        var ctx = Request.GetOwinContext();
+                        // get authentication manager
+                        var authManager = ctx.Authentication;
+                        //sign in as claimed identity- in this case the admin
+                        //A user is authenticated by calling AuthenticationManager.SignIn
+                        authManager.SignIn(identity);
 
                     
-                    //User is authenticated and redirected
-                    return RedirectToAction("Index", "Home");
+                        //User is authenticated and redirected
+                        return RedirectToAction("Index", "Home");
 
+                    }
+                    else
+                    {
+                        //User authentication failed
+                    }
                 }
-                else
-                {
-                    //User authentication failed
-                }
-                
+
             }
             return View(leaderModel); //Should always be declared on the end of an action method
 

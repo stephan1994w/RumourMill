@@ -13,19 +13,21 @@
     @Styles.Render("~/Content/filters.css")
     @Styles.Render("~/Content/demo.css")
 
-    <script type="text/javascript" src="@Url.Content("/Scripts/jquery-3.3.1.js")"></script>
-    <script type="text/javascript" src="@Url.Content("/Scripts/modernizr.custom.js")"></script>
-    <script type="text/javascript" src="@Url.Content("/Scripts/filtering.js")"></script>
 
     @Styles.Render("~/Content/css")
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
 </head>
 <body>
-    
-
-        @RenderBody()
 
 
+    @RenderBody()
+
+    <script type="text/javascript" src="@Url.Content("/Scripts/jquery-3.3.1.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/modernizr.custom.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/filtering.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Content/modal.js")"></script>
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
 </body>

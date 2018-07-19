@@ -17,7 +17,7 @@
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
-
+   
 }
 
     .buttonNew:after {
@@ -58,7 +58,7 @@
 /* Button 1a */
 .btn-1a:hover,
 .btn-1a:active {
-    color: #303e49;
+    color: #242424e3;
     background: #fff;
 }
 
@@ -231,20 +231,19 @@
 }
 
 .submit {
-    border: 2px solid #303e49;
-    color: #303e49;
+    border: 2px solid #242424e3;
+    color: #242424e3;
     float: right;
 }
 
 .submit:hover, .reject:active {
     color: white;
-    background: #303e49;
+    background: #242424e3;
 }
 
 .buttons {
     float: left;
     padding: 0 10px 0 0;
-
 }
 
 .replyTextArea{
@@ -258,11 +257,36 @@
 
 .formButton {
     padding: 8px;
-    margin: 5px;
+    margin: 5px 0;
     width: 200px;
 }
 .submitButton{
     padding:10px 50px;
     margin-top:10px;
     margin-bottom:5px
+}
+
+.editForm{
+    float:right;
+}
+
+@media only screen and (max-width: 768px) {
+    .buttons {
+        width: 100% !important;
+        padding:0px;
+    }
+
+    .formButton {
+        width: 100% !important;
+        
+    }
+
+    .submit {
+        width: 100% !important;
+    }
+
+
+    .topbar {
+        background-color: #242424e3;
+    }
 }
