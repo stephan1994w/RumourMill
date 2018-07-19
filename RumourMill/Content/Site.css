@@ -3,7 +3,9 @@
     background-color: #e9f0f5 !important;
     font-family: open sans,sans-serif !important;
 }
-
+html {
+    position: relative;
+    min-height: 100%;
 }
 .btn:focus, .btn:active {
     outline: none !important;
@@ -205,3 +207,18 @@ select{
         }
 
 
+.footer {
+    position:absolute;
+    left:0;
+    bottom: 0 !important;
+    margin-top: 20px;
+    background: #303e49;
+    color: white;
+    width:100%;
+    text-align:left;
+}
+
+.footertext{
+    float:none;
+    padding: 0 0 0 10px;
+}

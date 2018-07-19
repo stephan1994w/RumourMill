@@ -8,7 +8,6 @@
     color: inherit;
     background: none;
     cursor: pointer;
-    padding: 10px 50px;
     display: inline-block;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -243,8 +242,9 @@
 }
 
 .buttons {
-    float:left;
-    padding:0 10px 0 0;
+    float: left;
+    padding: 0 10px 0 0;
+
 }
 
 .replyTextArea{
@@ -254,4 +254,15 @@
     color: black;
     padding: 20px;
     border-radius: 5px;
+}
+
+.formButton {
+    padding: 8px;
+    margin: 5px;
+    width: 200px;
+}
+.submitButton{
+    padding:10px 50px;
+    margin-top:10px;
+    margin-bottom:5px
 }
