@@ -218,6 +218,9 @@
     <Compile Include="Models\Leader.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Log.cs">
+      <DependentUpon>QuestionModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\QContainer.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>QuestionModel.tt</DependentUpon>

@@ -28,5 +28,6 @@ namespace RumourMill.Models
         public virtual DbSet<Leader> Leaders { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Reply> Replies { get; set; }
+        public virtual DbSet<Log> Logs { get; set; }
     }
 }

@@ -12,15 +12,14 @@ namespace RumourMill.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Leader
+    public partial class Log
     {
-        public int LeaderId { get; set; }
-        public string LeaderName { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public string Image { get; set; }
-        public string Role { get; set; }
-        public Nullable<System.DateTime> LastAccess { get; set; }
-        public string Email { get; set; }
+        public int Id { get; set; }
+        public int QuestionId { get; set; }
+        public string Reason { get; set; }
+        public string User { get; set; }
+        public System.DateTime TimeEdited { get; set; }
+        public string OldText { get; set; }
+        public string NewText { get; set; }
     }
 }

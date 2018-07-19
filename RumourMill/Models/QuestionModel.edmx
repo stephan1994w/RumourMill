@@ -10,12 +10,25 @@
             <PropertyRef Name="LeaderId" />
           </Key>
           <Property Name="LeaderId" Type="int" Nullable="false" />
-          <Property Name="LeaderName" Type="varchar(max)" Nullable="false" />
           <Property Name="UserName" Type="varchar(max)" Nullable="false" />
           <Property Name="Password" Type="varchar(max)" Nullable="false" />
-          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="Email" Type="varchar(max)" />
           <Property Name="Role" Type="varchar(max)" />
+          <Property Name="LeaderName" Type="varchar(max)" Nullable="false" />
+          <Property Name="Image" Type="varchar(max)" />
           <Property Name="LastAccess" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="Reason" Type="varchar(max)" Nullable="false" />
+          <Property Name="User" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TimeEdited" Type="datetime" Nullable="false" />
+          <Property Name="OldText" Type="varchar(max)" Nullable="false" />
+          <Property Name="NewText" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Questions">
           <Key>
@@ -41,6 +54,7 @@
         </EntityType>
         <EntityContainer Name="RumourMill_dbModelStoreContainer">
           <EntitySet Name="Leaders" EntityType="Self.Leaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Replies" EntityType="Self.Replies" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -52,6 +66,7 @@
           <EntitySet Name="Leaders" EntityType="RumourMill_dbModel.Leader" />
           <EntitySet Name="Questions" EntityType="RumourMill_dbModel.Question" />
           <EntitySet Name="Replies" EntityType="RumourMill_dbModel.Reply" />
+          <EntitySet Name="Logs" EntityType="RumourMill_dbModel.Log" />
         </EntityContainer>
         <EntityType Name="Leader">
           <Key>
@@ -64,6 +79,7 @@
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastAccess" Type="DateTime" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -87,6 +103,18 @@
           <Property Name="TimeReplied" Type="DateTime" Precision="3" />
           <Property Name="TimeAgo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="User" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TimeEdited" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OldText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NewText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -96,6 +124,7 @@
           <EntitySetMapping Name="Leaders">
             <EntityTypeMapping TypeName="RumourMill_dbModel.Leader">
               <MappingFragment StoreEntitySet="Leaders">
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="LastAccess" ColumnName="LastAccess" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
@@ -127,6 +156,19 @@
                 <ScalarProperty Name="fk_LeaderId" ColumnName="fk_LeaderId" />
                 <ScalarProperty Name="fk_QuestionId" ColumnName="fk_QuestionId" />
                 <ScalarProperty Name="ReplyID" ColumnName="ReplyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="RumourMill_dbModel.Log">
+              <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="NewText" ColumnName="NewText" />
+                <ScalarProperty Name="OldText" ColumnName="OldText" />
+                <ScalarProperty Name="TimeEdited" ColumnName="TimeEdited" />
+                <ScalarProperty Name="User" ColumnName="User" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

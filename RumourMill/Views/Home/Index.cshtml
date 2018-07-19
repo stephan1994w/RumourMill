@@ -85,6 +85,7 @@
     }
 
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <div class="topbar">
     @if (@User.Identity.IsAuthenticated)
     {
@@ -199,6 +200,19 @@
                                 <button type="submit" class="reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
                             </form>
                         }
+                        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
+                        {
+                                <form action="~/Home/EditQuestion" class="buttons" method="POST">
+                                    <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                                    <input type="hidden" name="IsApproved" value="True" />
+                                    <input type="hidden" name="user" value="@User.Identity.Name" />
+                                    <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
+                                    <br />
+                                    <textarea type="text" value="@Model[0].qrvmodel[p].QuestionText" name="editText"></textarea> <br />
+                                    <input type="text" placeholder="Enter your reason here" name="reason" />
+                                    <button type="submit" class="approve buttonNew btn-1 btn-1a" value="Submit">Edit and Approve</button>
+                                </form>
+                        }
                         <div id="blank"></div>
                     </div>
                     @Html.Raw("</div>")<!-- Question -->
@@ -247,3 +261,10 @@
 
     }
 </div>
+<script>
+    //$("#editButton").click(function () {
+    //    $("#editQuestion").show();
+    //});
+
+
+</script>

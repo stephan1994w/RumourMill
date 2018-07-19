@@ -230,6 +230,38 @@ namespace RumourMill.Controllers
             }
         }
 
+        [Authorize(Roles = "Moderator, SuperAdmin")]
+        public ActionResult EditQuestion(int questionId, string editText, string reason, string user, string oldText)
+        {
+
+            using (db)
+            {
+                var log = db.Set<Log>();
+                log.Add(new Log
+                {
+                    QuestionId = questionId,
+                    Reason = reason,
+                    User = user,
+                    TimeEdited = DateTime.Now,
+                    OldText = oldText,
+                    NewText = editText
+                });
+                if (ModelState.IsValid)
+                {
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).QuestionText = editText;
+                    db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).Status = "Approved";
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+
+            }
+        }
+
         [AllowAnonymous]
         public ActionResult Login()
         {
