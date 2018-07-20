@@ -24,11 +24,6 @@ html {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select{
-    max-width: 280px;
-}
 
 .innertext{
     padding:0 !important;
@@ -61,6 +56,7 @@ select{
     background-attachment: fixed;
     background-position: top;
 }
+
 
 
 .question-header h1 {
@@ -234,9 +230,10 @@ select{
     text-align:left;
 }
 
-.footertext{
-    float:none;
-    padding: 0 0 0 10px;
+.footertext {
+    font-weight: normal;
+    padding: 20px !important;
+    float: none;
 }
 
 .questionheader h1 {
@@ -344,7 +341,7 @@ select{
 .label-container {
     position: fixed;
     top: 10px;
-    left: 0px;
+    left: 70px;
     display: table;
     visibility: hidden;
     z-index: 1000;
@@ -368,22 +365,22 @@ select{
 
 .float {
     position: fixed;
-    width: 200px;
+    width: 60px;
     height: 60px;
-    top: 0px;
-    left: -130px;
-    background-color: #06C;
-    color: #FFF;
-    border-radius: 50px;
+    top: 0;
+    left: 0;
+    background-color: #0066ccc9;
+    color: #fff;
+    /*border-radius: 0 50% 50% 0;
+    border-radius: 50%;*/
     text-align: center;
-    box-shadow: 2px 2px 3px #000;
+    /* box-shadow: 2px 2px 3px #000; */
     z-index: 1000;
 }
 
 .my-float {
     font-size: 30px !important;
-    margin-top: 15px;
-    margin-left: 120px;
+    margin-top: 15px
 }
 
 a.float + div.label-container {
@@ -608,3 +605,127 @@ a.float:hover {
 }
 
 
+.group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 300px;
+    border: none;
+    box-shadow: inset 0 -1px 0 #00000042;
+    background-color: transparent;
+}
+
+    input:focus {
+        outline: none;
+    }
+
+/* LABEL ======================================= */
+label {
+    color: #999;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    font-style: italic;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+
+
+/* active state */
+input:focus ~ label, input:valid ~ label {
+    top: -8px;
+    font-size: 10px;
+    color: #5264AE;
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+    .bar:before, .bar:after {
+        content: '';
+        height: 2px;
+        width: 0;
+        bottom: 1px;
+        position: absolute;
+        background: #5264AE;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    .bar:before {
+        left: 50%;
+    }
+
+    .bar:after {
+        right: 50%;
+    }
+
+/* active state */
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}

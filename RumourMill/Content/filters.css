@@ -55,6 +55,10 @@ a {
     border-color: #00000099 transparent transparent transparent;
 }
 
+.filter a.active {
+    background: #00000047 !important;
+}
+
 .is-animated {
     animation: .6s zoom-in;
 }

@@ -266,10 +266,12 @@
     margin-bottom:5px
 }
 
-.editForm{
-    float:right;
+.editForm {
+    float: right;
+    max-width: 100%;
 }
 
+/*MOBILE CSS*/
 @media only screen and (max-width: 768px) {
     .buttons {
         width: 100% !important;
@@ -288,5 +290,9 @@
 
     .topbar {
         background-color: #242424e3;
+    }
+
+    .question-header h1 {
+        padding-top: 50px;
     }
 }
