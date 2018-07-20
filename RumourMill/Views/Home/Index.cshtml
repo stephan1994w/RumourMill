@@ -108,7 +108,7 @@
         Have a work related question you've heard that you think needs answered? Submit it here. 
         <br />Please be sure to anonymise your questions.
         <form action="~/Home/Save" method="POST">
-            <textarea type="text" placeholder="Enter your question here" name="questionText"></textarea> <br />
+            <textarea type="text" placeholder="Enter your question here" name="questionText" required></textarea> <br />
             <button type="submit" class="buttonNew btn-1 btn-1a submitButton" value="Submit">SUBMIT</button>
         </form>
     </div>
@@ -181,7 +181,7 @@
 
 </div>
 
-<div class="cta filter" style="text-align: center;">
+<div class="cta filter" style="text-align: center; padding: 15px;">
 
     @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
     {
