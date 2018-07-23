@@ -88,7 +88,7 @@ namespace RumourMill.Controllers
                         qCount[index] = currentCount;
                     }
                 }
-                
+
             }
 
             QRModel.Reverse();
@@ -161,10 +161,15 @@ namespace RumourMill.Controllers
 
             using (db)
             {
-           
+
                 var reply = db.Set<Reply>();
-                reply.Add(new Reply { ReplyText = replyText, fk_QuestionId = fk_QuestionId,
-                    fk_LeaderId = fk_LeaderId,  TimeReplied = DateTime.Now });
+                reply.Add(new Reply
+                {
+                    ReplyText = replyText,
+                    fk_QuestionId = fk_QuestionId,
+                    fk_LeaderId = fk_LeaderId,
+                    TimeReplied = DateTime.Now
+                });
 
                 if (string.IsNullOrEmpty(replyText))
                 {
@@ -268,6 +273,49 @@ namespace RumourMill.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
+        public ActionResult ChangePassword(int leaderId, string currentPassword, string newPassword)
+        {
+            if (!ModelState.IsValid) //Checks if input fields have the correct format
+            {
+                return View(); //Returns the view with the input values so that the user doesn't have to retype again
+            }
+            using (RumourMillEntities db = new RumourMillEntities())
+            {
+                // hash the password and compare against database
+                if (!(leaderId == null || currentPassword == null))
+                {
+                    var hashedPassword = Sha256encrypt(currentPassword);
+                    var leaderDetails = db.Leaders.Where(x => x.LeaderId == leaderId && x.Password == hashedPassword).FirstOrDefault();
+
+                    if (leaderDetails != null)
+                    {
+                        var newHashedPassword = Sha256encrypt(newPassword);
+                        db.Set<Leader>().SingleOrDefault(o => o.LeaderId == leaderId).Password = newHashedPassword;
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index", "Home");
+
+                    }
+                    else
+                    {
+                        //User authentication failed
+                        return View();
+                    }
+                }
+
+            }
+            return View(); //Should always be declared on the end of an action method
+
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(Leader leaderModel)
@@ -279,11 +327,11 @@ namespace RumourMill.Controllers
             using (RumourMillEntities db = new RumourMillEntities())
             {
                 // hash the password and compare against database
-                if(!(leaderModel.UserName==null || leaderModel.Password == null))
-                { 
+                if (!(leaderModel.UserName == null || leaderModel.Password == null))
+                {
                     var hashedPassword = Sha256encrypt(leaderModel.Password);
                     var leaderDetails = db.Leaders.Where(x => x.UserName == leaderModel.UserName && x.Password == hashedPassword).FirstOrDefault();
-               
+
                     if (leaderDetails != null)
                     {
 
@@ -291,7 +339,7 @@ namespace RumourMill.Controllers
                              new Claim(ClaimTypes.Role, leaderDetails.Role),
                              new Claim(ClaimTypes.Name, leaderDetails.LeaderName),
                              new Claim(ClaimTypes.NameIdentifier, leaderDetails.LeaderId.ToString())
-                        }, 
+                        },
                             "ApplicationCookie");
 
                         // get owin context
@@ -302,7 +350,7 @@ namespace RumourMill.Controllers
                         //A user is authenticated by calling AuthenticationManager.SignIn
                         authManager.SignIn(identity);
 
-                    
+
                         //User is authenticated and redirected
                         return RedirectToAction("Index", "Home");
 
@@ -341,6 +389,6 @@ namespace RumourMill.Controllers
             return Convert.ToBase64String(hashedDataBytes);
         }
 
-        
+
     }
 }
