@@ -240,6 +240,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>QuestionModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LeaderErrors.cs" />
     <Compile Include="Models\QuestionReply.cs" />
     <Compile Include="Models\QuestionReplyViewModel.cs" />
     <Compile Include="Models\Reply.cs">

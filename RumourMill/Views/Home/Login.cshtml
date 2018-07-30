@@ -1,4 +1,4 @@
-﻿﻿@model RumourMill.Models.Leader
+﻿﻿@model RumourMill.Models.LeaderErrors
 
 @{
     ViewBag.Title = "The Grapevine - Login";
@@ -25,12 +25,15 @@
 
         <h1 class="login-title">Login</h1>
 
-        
-            <input type="text" class="login-input" id="UserName" name="UserName" value="" placeholder="Username" autofocus>
-        
 
-            <input type="password" class="login-input" id="Password" name="Password" value="" placeholder="Password" autofocus>
-       
+        <input type="text" class="login-input" id="UserName" name="UserName" value="" placeholder="Username" autofocus>
+
+
+        <input type="password" class="login-input" id="Password" name="Password" value="" placeholder="Password" autofocus>
+
+        <div class="errormessage">
+            @Html.DisplayFor(model => model.ErrorMessage)
+        </div>
 
         <input type="submit" class="login-button" name="name" value="Login" />
 

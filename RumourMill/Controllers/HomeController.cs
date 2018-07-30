@@ -281,7 +281,7 @@ namespace RumourMill.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
-        public ActionResult ChangePassword(int leaderId, string currentPassword, string newPassword)
+        public ActionResult ChangePassword(int leaderId, string currentPassword, string newPassword, LeaderErrors leaderModel)
         {
             if (!ModelState.IsValid) //Checks if input fields have the correct format
             {
@@ -307,8 +307,13 @@ namespace RumourMill.Controllers
                     else
                     {
                         //User authentication failed
+                        leaderModel.ErrorMessage = "The current password you've entered is incorrect. Please try again.";
                         return View();
                     }
+                } else
+                {
+                    leaderModel.ErrorMessage = "Please enter your current password and your new password.";
+                    //User authentication failed - blank 
                 }
 
             }
@@ -318,7 +323,7 @@ namespace RumourMill.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(Leader leaderModel)
+        public ActionResult Login(LeaderErrors leaderModel)
         {
             if (!ModelState.IsValid) //Checks if input fields have the correct format
             {
@@ -357,8 +362,14 @@ namespace RumourMill.Controllers
                     }
                     else
                     {
+                        leaderModel.ErrorMessage = "The username or password entered is incorrected. Please try again.";
                         //User authentication failed
                     }
+                }
+                else
+                {
+                    leaderModel.ErrorMessage = "The username or password entered is incorrected. Please try again.";
+                    //User authentication failed - blank 
                 }
 
             }
