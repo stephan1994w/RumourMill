@@ -25,9 +25,10 @@ html {
 }
 
 
-.innertext{
-    padding:0 !important;
-    margin:0 !important;
+.innertext {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: auto;
 }
 
 .question-header {

@@ -295,4 +295,8 @@
     .question-header h1 {
         padding-top: 50px;
     }
+
+    .reply-frame {
+        max-width: 60% !important;
+    }
 }
