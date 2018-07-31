@@ -308,7 +308,7 @@ namespace RumourMill.Controllers
                     {
                         //User authentication failed
                         leaderModel.ErrorMessage = "The current password you've entered is incorrect. Please try again.";
-                        return View();
+                        return View(leaderModel);
                     }
                 } else
                 {
@@ -317,7 +317,7 @@ namespace RumourMill.Controllers
                 }
 
             }
-            return View(); //Should always be declared on the end of an action method
+            return View(leaderModel); //Should always be declared on the end of an action method
 
         }
 
