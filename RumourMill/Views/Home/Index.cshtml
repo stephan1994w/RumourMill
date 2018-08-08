@@ -355,10 +355,19 @@
                             </div>
 
                             <div class="group">
-                                <input type="text" class="edittextareas" name="reason" required>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label><i>Enter edit reason</i></label>
+                                <select name="reason" id="reason" onchange='checkvalue(this.value)' required>
+                                    <option value="">Please select edit reason...</option>
+                                    <option value="Profanity">Profanity</option>
+                                    <option value="Removing client name">Removing client name</option>
+                                    <option value="Removing individual name">Removing individual name</option>
+                                    <option value="Other">Other (please specify)</option>
+                                </select>
+                                <input type="text" class="edittextareas" name="reasonOther" id="reasonOther" placeholder="Please enter a reason" style="display:none" required/>
+                                <br />
+                                @*<input type="text" class="edittextareas" name="reason" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label><i>Enter edit reason</i></label>*@
                             </div>
                             <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
                         </form>
@@ -427,6 +436,21 @@
     {
         @: $(".all").addClass("active");
     }
+    function checkvalue(val)
+      {
+      if(val==="Other")
+      document.getElementById('reasonOther').style.display='block';
+      else
+      document.getElementById('reasonOther').style.display='none';
+      }
+
+      $('#reason').change(function () {
+        if ($('#reason').val() == "Other") {
+            $('#reasonOther').attr('required');
+        } else {
+            $('#reasonOther').removeAttr('required');
+         }
+        });
 </script>
 <div class="noquestions"><h1>No additional results found.</h1></div>
 <div class="spacer" style="height:100px"></div>

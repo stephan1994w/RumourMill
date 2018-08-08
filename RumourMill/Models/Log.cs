@@ -21,5 +21,6 @@ namespace RumourMill.Models
         public System.DateTime TimeEdited { get; set; }
         public string OldText { get; set; }
         public string NewText { get; set; }
+        public string ReasonOther { get; set; }
     }
 }
