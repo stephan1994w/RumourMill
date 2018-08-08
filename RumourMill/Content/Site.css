@@ -370,7 +370,7 @@ html {
     height: 60px;
     top: 0;
     left: 0;
-    background-color: #0066ccc9;
+    background-color: #03dc00c9;
     color: #fff;
     /*border-radius: 0 50% 50% 0;
     border-radius: 50%;*/
@@ -731,3 +731,9 @@ input:focus ~ .highlight {
     }
 }
 
+.submitMessage {
+    display: block;
+    color: #2ebd2e;
+    font-weight: bold;
+    font-style: italic;
+}

@@ -101,15 +101,15 @@ namespace RumourMill.Controllers
 
 
 
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    DateTime currentTime;
-            //    //FOR BST
-            //    currentTime = DateTime.Now;
-            //    currentTime.AddHours(1);
-            //    db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
-            //    db.SaveChanges();
-            //}
+            if (User.Identity.IsAuthenticated)
+            {
+                DateTime currentTime;
+                //FOR BST
+                currentTime = DateTime.Now;
+                currentTime.AddHours(1);
+                db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
+                db.SaveChanges();
+            }
 
             return View(model);
         }
@@ -143,12 +143,22 @@ namespace RumourMill.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    db.SaveChanges();
+                    try
+                    {
+                        db.SaveChanges();
+                        TempData["UserMessage"] = "Thanks for your response. Your question has been submitted for moderation.";
 
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["UserMessage"] = "There has been an error. Please contact Stephan or Daniel.";
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {
+                    TempData["UserMessage"] = "There has been an error. Please contact Stephan or Daniel.";
                     return RedirectToAction("Index", "Home");
                 }
             }
