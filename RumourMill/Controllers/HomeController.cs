@@ -246,7 +246,7 @@ namespace RumourMill.Controllers
         }
 
         [Authorize(Roles = "Moderator, SuperAdmin")]
-        public ActionResult EditQuestion(int questionId, string editText, string reason, string user, string oldText)
+        public ActionResult EditQuestion(int questionId, string editText, string reason, string user, string oldText, string reasonOther)
         {
 
             using (db)
@@ -259,7 +259,8 @@ namespace RumourMill.Controllers
                     User = user,
                     TimeEdited = DateTime.Now,
                     OldText = oldText,
-                    NewText = editText
+                    NewText = editText,
+                    ReasonOther = reasonOther
                 });
                 if (ModelState.IsValid)
                 {
