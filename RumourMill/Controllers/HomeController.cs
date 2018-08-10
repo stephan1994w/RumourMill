@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Collections;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.AspNet.Identity;
 
 namespace RumourMill.Controllers
 {
@@ -166,18 +167,19 @@ namespace RumourMill.Controllers
 
         // allow only SuperAdmin and Leader to reply
         [Authorize(Roles = "Leader, SuperAdmin")]
-        public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderId)
+        public ActionResult SaveReply(string replyText, int fk_QuestionId)
         {
 
             using (db)
             {
-
                 var reply = db.Set<Reply>();
+                string id = User.Identity.GetUserId();
+                int idInt = Convert.ToInt32(id);
                 reply.Add(new Reply
                 {
                     ReplyText = replyText,
                     fk_QuestionId = fk_QuestionId,
-                    fk_LeaderId = fk_LeaderId,
+                    fk_LeaderId = idInt,
                     TimeReplied = DateTime.Now
                 });
 
@@ -292,7 +294,7 @@ namespace RumourMill.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
-        public ActionResult ChangePassword(int leaderId, string currentPassword, string newPassword, LeaderErrors leaderModel)
+        public ActionResult ChangePassword(string currentPassword, string newPassword, LeaderErrors leaderModel)
         {
             if (!ModelState.IsValid) //Checks if input fields have the correct format
             {
@@ -300,16 +302,17 @@ namespace RumourMill.Controllers
             }
             using (RumourMillEntities db = new RumourMillEntities())
             {
+                int id = Convert.ToInt32(User.Identity.GetUserId());
                 // hash the password and compare against database
-                if (!(leaderId == null || currentPassword == null))
+                if (!(id == null || currentPassword == null))
                 {
                     var hashedPassword = Sha256encrypt(currentPassword);
-                    var leaderDetails = db.Leaders.Where(x => x.LeaderId == leaderId && x.Password == hashedPassword).FirstOrDefault();
+                    var leaderDetails = db.Leaders.Where(x => x.LeaderId == id && x.Password == hashedPassword).FirstOrDefault();
 
                     if (leaderDetails != null)
                     {
                         var newHashedPassword = Sha256encrypt(newPassword);
-                        db.Set<Leader>().SingleOrDefault(o => o.LeaderId == leaderId).Password = newHashedPassword;
+                        db.Set<Leader>().SingleOrDefault(o => o.LeaderId == id).Password = newHashedPassword;
                         db.SaveChanges();
 
                         return RedirectToAction("Index", "Home");
