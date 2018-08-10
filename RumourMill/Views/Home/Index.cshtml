@@ -324,7 +324,7 @@
                     <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
                 </form>
                 }
-                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
                 {
                     <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
                         <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
@@ -332,7 +332,7 @@
                         <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
                     </form>
                 }
-                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Rejected")
                 {
                     <form action="~/Home/RejectQuestion" class="buttons" method="POST">
                         <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
