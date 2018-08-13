@@ -89,7 +89,7 @@
     <div class="topbar">
         @if (@User.Identity.IsAuthenticated)
         {
-        <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/ChangePassword">Change Password</a> &#124 <a href="/Home/Logout">Logout</a></p>
+            <p class="welcometext">Welcome, <span class="name">@User.Identity.Name </span> &#124 <a href="/Home/ChangePassword">Change Password</a> &#124 <a href="/Home/Logout">Logout</a></p>
 
         }
         @if (!@User.Identity.IsAuthenticated)
@@ -104,14 +104,14 @@
 
         <h1>The Grapevine</h1>
 
-        Have a work related question you've heard that you think needs answered? Submit it here. 
+        Have a work related question you've heard that you think needs answered? Submit it here.
         <br />Please be sure to anonymise your questions. For more guidance, click the green information button in the top left corner.
         <form action="~/Home/Save" method="POST">
             <textarea type="text" placeholder="Enter your question here" name="questionText" required></textarea> <br />
             <button type="submit" class="buttonNew btn-1 btn-1a submitButton" value="Submit">SUBMIT</button>
-            @if(TempData["UserMessage"]!=null)
-            { 
-            <span class="submitMessage">@TempData["UserMessage"]</span>
+            @if (TempData["UserMessage"] != null)
+            {
+                <span class="submitMessage">@TempData["UserMessage"]</span>
             }
         </form>
     </div>
@@ -136,7 +136,7 @@
 </div>
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     @if (@User.IsInRole("Moderator"))
     {
@@ -147,7 +147,7 @@
         @: $("#modBtn").hide();
 
     }
-    </script>
+</script>
 
 
 <!-- The Modal -->
@@ -165,7 +165,7 @@
                 <br /><br />
                 By default you are shown the “Unmoderated” tab, allowing for you to instantly log in and start approving questions that need to be approved. You will also notice that each question is a different colour. These colours represent their current state as follows:
                 <br />
-   
+
                 <table class="tg">
                     <tr>
                         <th class="tg-us36">Unmoderated</th>
@@ -280,54 +280,54 @@
                 @Html.Raw(" unanswered")
             }
             @Html.Raw("'>")
-    <div class="cd-timeline__block js-cd-block">
-        <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
-            <img src="../Content/question.svg" alt="Question">
-        </div>
-
-        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-        {
-            @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
-        }
-        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-        {
-            @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
-        }
-        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-        {
-            @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
-        }
-        else
-        {
-            @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
-        }
-
-        <p class="innertext">
-            @Model[0].qrvmodel[p].QuestionText
-        </p>
-
-        <span class="cd-timeline__date">
-            Asked @GetPrettyDate(Model[0].qrvmodel[p].TimeAsked)
-            @if (!((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
-            {
-                <br /><span>Edit Reason: @Model[0].qrvmodel[p].EditReason</span>
-            }
-        </span>
-
-        @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
-        {
-            <form action="~/Home/SaveReply" method="POST">
-
-                <div class="group">
-                    <input type="text" name="replyText" style="width:100%;" required>
-                    <span class="highlight"></span>
-                    <span class="bar" style="width:100%;"></span>
-                    <label>Enter your reply here</label>
+            <div class="cd-timeline__block js-cd-block">
+                <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+                    <img src="../Content/question.svg" alt="Question">
                 </div>
 
-                    <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                    <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
-                </form>
+                @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
+                }
+                else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
+                }
+                else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+                {
+                    @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
+                }
+                else
+                {
+                    @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
+                }
+
+                <p class="innertext">
+                    @Model[0].qrvmodel[p].QuestionText
+                </p>
+
+                <span class="cd-timeline__date">
+                    Asked @GetPrettyDate(Model[0].qrvmodel[p].TimeAsked)
+                    @if (!((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
+                    {
+                        <br /><span>Edit Reason: @Model[0].qrvmodel[p].EditReason</span>
+                    }
+                </span>
+
+                @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
+                {
+                    <form action="~/Home/SaveReply" method="POST">
+
+                        <div class="group">
+                            <input type="text" name="replyText" style="width:100%;" required>
+                            <span class="highlight"></span>
+                            <span class="bar" style="width:100%;"></span>
+                            <label>Enter your reply here</label>
+                        </div>
+
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
+                    </form>
                 }
                 @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
                 {
@@ -355,35 +355,54 @@
                             <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
                             <br />
 
-                    <div class="group">
-                        <input type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText" required>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label>Question Text</label>
-                    </div>
+                            <div class="group">
+                                <input type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText" required>
+                                <span class="highlight"></span>
+                                <span class="bar"></span>
+                                <label>Question Text</label>
+                            </div>
 
-                    <div class="group">
-                        <select name="reason" id="reason" onchange='checkvalue(this.value)' required>
-                            <option value="">Please select edit reason...</option>
-                            <option value="Profanity">Profanity</option>
-                            <option value="Removing client name">Removing client name</option>
-                            <option value="Removing individual name">Removing individual name</option>
-                            <option value="Other">Other (please specify)</option>
-                        </select>
-                        <input type="text" class="edittextareas" name="reasonOther" id="reasonOther" placeholder="Please enter a reason" style="display:none" required />
-                        <br />
+                            <div class="group">
+                                @{
+                                    int edited;
+                                    if (((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
+                                    {
+                                        edited = 1;
+                                    }
+                                    else
+                                    {
+                                        edited = 0;
+                                    }
 
-                        @*<input type="text" class="edittextareas" name="reason" required>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label><i>Enter edit reason</i></label>*@
+                                    string reasonClass = "reason " + edited + " reason" + @Model[0].qrvmodel[p].QuestionId;
+                                }
+                                <select name="reason" id="reason" class="@reasonClass" required>
+                                    <option value="">Please select edit reason...</option>
+                                    <option value="Profanity">Profanity</option>
+                                    <option value="Removing client name">Removing client name</option>
+                                    <option value="Removing individual name">Removing individual name</option>
+                                    <option value="Other">Other (please specify)</option>
+                                </select>
+
+                                @{
+                                    string editClass = "edittextareas edittextarea" + @Model[0].qrvmodel[p].QuestionId;
+                                }
+                                <br />
+                                <input type="text" class="@editClass" name="reasonOther" id="reasonOther" placeholder="Please enter a reason" style="display:none" required />
+
+
+
+                                @*<input type="text" class="edittextareas" name="reason" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label><i>Enter edit reason</i></label>*@
+                            </div>
+                            <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
+                        </form>
                     </div>
-                    <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
-                </form>
+                }
+                <div id="blank"></div>
             </div>
-        }
-        <div id="blank"></div>
-    </div>
             @Html.Raw("</div>")<!-- Question -->
             if (Model[0].qrvmodel[p].IsAnswered)
             {
@@ -406,7 +425,7 @@
                                 @Model[0].qrvmodel[p + j].ReplyText
                             </p>
                             <span class="cd-timeline__date reply-align">
-                                Asked @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)                               
+                                Asked @GetPrettyDate(Model[0].qrvmodel[p + j].TimeReplied)
                             </span>
                         </div> <!-- cd-timeline__content -->
                     </div> <!-- Reply -->
@@ -430,35 +449,20 @@
         }
     }
 </div>
-<script type="text/javascript">
+<script>
+@if (@User.IsInRole("Moderator"))
+{
+    @: $(".approved").fadeOut();
+    @: $(".rejected").fadeOut();
+    @: $(".unmoderated").fadeIn();
+    @: $(".unmod").addClass("active");
+    @: $(".unmod").click();
+}
+else
+{
+    @: $(".all").addClass("active");
+}
 
-    @if(@User.IsInRole("Moderator"))
-    {
-        @: $(".approved").fadeOut();
-        @: $(".rejected").fadeOut();
-        @: $(".unmoderated").fadeIn();
-        @: $(".unmod").addClass("active");
-        @: $(".unmod").click();
-    }
-    else
-    {
-        @: $(".all").addClass("active");
-    }
-    function checkvalue(val)
-      {
-      if(val==="Other")
-      document.getElementById('reasonOther').style.display='block';
-      else
-      document.getElementById('reasonOther').style.display='none';
-      }
-
-      $('#reason').change(function () {
-        if ($('#reason').val() == "Other") {
-            $('#reasonOther').attr('required');
-        } else {
-            $('#reasonOther').removeAttr('required');
-         }
-        });
 </script>
 <div class="noquestions"><h1>No additional results found.</h1></div>
 <div class="spacer" style="height:100px"></div>
