@@ -14,6 +14,7 @@ namespace RumourMill.Models
         public string Status { get; set; }
         public bool IsAnswered { get; set; }
         public DateTime TimeAsked { get; set; }
+        public string EditReason { get; set; }
 
         public int ReplyID { get; set; }
         public int fk_QuestionId { get; set; }

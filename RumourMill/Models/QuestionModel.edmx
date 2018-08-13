@@ -41,6 +41,7 @@
           <Property Name="IsAnswered" Type="bit" Nullable="false" />
           <Property Name="TimeAsked" Type="datetime" />
           <Property Name="TimeAgo" Type="varchar(max)" />
+          <Property Name="EditReason" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Replies">
           <Key>
@@ -92,6 +93,7 @@
           <Property Name="IsAnswered" Type="Boolean" Nullable="false" />
           <Property Name="TimeAsked" Type="DateTime" Precision="3" />
           <Property Name="TimeAgo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EditReason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Reply">
           <Key>
@@ -140,6 +142,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="RumourMill_dbModel.Question">
               <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="EditReason" ColumnName="EditReason" />
                 <ScalarProperty Name="TimeAgo" ColumnName="TimeAgo" />
                 <ScalarProperty Name="TimeAsked" ColumnName="TimeAsked" />
                 <ScalarProperty Name="IsAnswered" ColumnName="IsAnswered" />

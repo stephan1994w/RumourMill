@@ -32,6 +32,7 @@ namespace RumourMill.Controllers
                                           qStatus = x.Status,
                                           qAnswered = x.IsAnswered,
                                           qID = x.QuestionId,
+                                          qER = x.EditReason,
                                           qTime = x.TimeAsked,
                                           rText = a.ReplyText,
                                           rTime = a.TimeReplied,
@@ -48,12 +49,12 @@ namespace RumourMill.Controllers
                     Status = joinedItem.qStatus,
                     IsAnswered = joinedItem.qAnswered,
                     QuestionId = joinedItem.qID,
+                    EditReason = joinedItem.qER,
                     TimeAsked = joinedItem.qTime ?? DateTime.Now,
                     ReplyText = joinedItem.rText,
                     TimeReplied = joinedItem.rTime ?? DateTime.Now,
                     LeaderName = joinedItem.lName,
                     Image = joinedItem.lImage
-
                 });
             }
 
@@ -101,15 +102,13 @@ namespace RumourMill.Controllers
 
 
 
-            if (User.Identity.IsAuthenticated)
-            {
-                DateTime currentTime;
-                //FOR BST
-                currentTime = DateTime.Now;
-                currentTime.AddHours(1);
-                db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = currentTime;
-                db.SaveChanges();
-            }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    string test = User.Identity.Name;
+            //    test = test;
+            //    db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = DateTime.Now.AddHours(1);
+            //    db.SaveChanges();
+            //}
 
             return View(model);
         }
@@ -168,10 +167,8 @@ namespace RumourMill.Controllers
         [Authorize(Roles = "Leader, SuperAdmin")]
         public ActionResult SaveReply(string replyText, int fk_QuestionId, int fk_LeaderId)
         {
-
             using (db)
             {
-
                 var reply = db.Set<Reply>();
                 reply.Add(new Reply
                 {
@@ -251,6 +248,19 @@ namespace RumourMill.Controllers
 
             using (db)
             {
+                string reasonToWrite;
+                if (reasonOther != "")
+                {
+                    reasonToWrite = reasonOther;
+                }
+                else
+                {
+                    reasonToWrite = reason;
+                }
+
+                db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).EditReason = reasonToWrite;
+                db.SaveChanges();
+
                 var log = db.Set<Log>();
                 log.Add(new Log
                 {
@@ -262,6 +272,7 @@ namespace RumourMill.Controllers
                     NewText = editText,
                     ReasonOther = reasonOther
                 });
+
                 if (ModelState.IsValid)
                 {
                     db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).QuestionText = editText;
@@ -273,8 +284,6 @@ namespace RumourMill.Controllers
                 {
                     return RedirectToAction("Index", "Home");
                 }
-
-
             }
         }
 
