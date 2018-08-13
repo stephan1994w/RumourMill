@@ -325,36 +325,35 @@
                     <label>Enter your reply here</label>
                 </div>
 
-                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                <input type="hidden" name="fk_LeaderId" value="@User.Identity.GetUserId()" />
-                <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
-            </form>
-        }
-        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
-        {
-            <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
-                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                <input type="hidden" name="IsApproved" value="True" />
-                <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
-            </form>
-        }
-        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin"))
-        {
-            <form action="~/Home/RejectQuestion" class="buttons" method="POST">
-                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                <input type="hidden" name="IsApproved" value="False" />
-                <button type="submit" class="formButton reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
-            </form>
-        }
-        @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")) && @Model[0].qrvmodel[p].Status != "Approved")
-        {
-            <div style="position:relative;clear: both;">
-                <form action="~/Home/EditQuestion" class="editForm" method="POST">
-                    <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                    <input type="hidden" name="IsApproved" value="True" />
-                    <input type="hidden" name="user" value="@User.Identity.Name" />
-                    <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
-                    <br />
+                    <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                    <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
+                </form>
+                }
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
+                {
+                    <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <input type="hidden" name="IsApproved" value="True" />
+                        <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
+                    </form>
+                }
+                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Rejected")
+                {
+                    <form action="~/Home/RejectQuestion" class="buttons" method="POST">
+                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                        <input type="hidden" name="IsApproved" value="False" />
+                        <button type="submit" class="formButton reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
+                    </form>
+                }
+                @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")) && @Model[0].qrvmodel[p].Status != "Approved")
+                {
+                    <div style="position:relative;clear: both;">
+                        <form action="~/Home/EditQuestion" class="editForm" method="POST">
+                            <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                            <input type="hidden" name="IsApproved" value="True" />
+                            <input type="hidden" name="user" value="@User.Identity.Name" />
+                            <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
+                            <br />
 
                     <div class="group">
                         <input type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText" required>
