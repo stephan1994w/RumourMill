@@ -149,11 +149,8 @@
     }
 </script>
 
-
-<!-- The Modal -->
+@* Guidance Modal for Moderators *@
 <div id="modModal" class="modal">
-
-    <!-- Modal content -->
     <div class="modal-content">
         <div class="modal-header">
             <span class="modClose">&times;</span>
@@ -194,7 +191,7 @@
 
 </div>
 
-<!-- The Modal -->
+@* Guidance Modal for all others *@
 <div id="genModal" class="modal">
 
     <!-- Modal content -->
@@ -226,6 +223,7 @@
 
 <div class="cta filter" style="text-align: center; padding: 15px;">
 
+    @* Only show Unmoderatred/approved/rejected filters to Moderators and SuperAdmins *@
     @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
     {
 
@@ -240,24 +238,20 @@
 
 </div>
 
+@* Main container div *@
 <div class="container body-content mainparent">
 
+    @* For every single question that has been asked *@
     @for (int i = 0, p = 0; i < Model[0].questionCount.Count; i++)
     {
-        //q += Model[0].questionCount[i];
-        //if (Model[0].questionCount[i] > 1)
-        //{
-
-        //    int hold = Model[0].questionCount[p];
-        //    p += hold - 1;
-        //}
-
-
+        //For anonymous users, they only see approved questions
+        //Moderators and Admins see all questions
         if (@Model[0].qrvmodel[p].Status == "Approved" || (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
         {
-
+            //User raw html to generate the correct header classes for each question type
             @Html.Raw("<div class='cd-timeline__container")
 
+            //Classes to set the status (approved/rejected/unmoderated)
             if (Model[0].qrvmodel[p].Status == "Approved")
             {
                 @Html.Raw(" approved")
@@ -271,6 +265,7 @@
                 @Html.Raw(" unmoderated")
             }
 
+            //Classes to set if answered or not
             if (Model[0].qrvmodel[p].IsAnswered)
             {
                 @Html.Raw(" answered")
@@ -280,134 +275,146 @@
                 @Html.Raw(" unanswered")
             }
             @Html.Raw("'>")
-            <div class="cd-timeline__block js-cd-block">
-                <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
-                    <img src="../Content/question.svg" alt="Question">
+    <div class="cd-timeline__block js-cd-block">
+        <div class="cd-timeline__img cd-timeline__img--movie js-cd-img">
+            <img src="../Content/question.svg" alt="Question">
+        </div>
+        @* Depending on the user role (anon/leader or moderator/superadmin, display different classes *@
+        @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+        {
+            @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
+        }
+        else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+        {
+            @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
+        }
+        else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
+        {
+            @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
+        }
+        else
+        {
+            @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
+        }
+        @* Display the question text *@
+        <p class="innertext">
+            @Model[0].qrvmodel[p].QuestionText
+        </p>
+
+        @* Display the beautified version of the date *@
+        <span class="cd-timeline__date">
+            Asked @GetPrettyDate(Model[0].qrvmodel[p].TimeAsked)
+
+            @* If the question has been edited, set the edit reason to display *@
+            @if (!((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
+            {
+                <br /><span>Edit Reason: @Model[0].qrvmodel[p].EditReason</span>
+            }
+        </span>
+
+        @* If the user is a Leader or a SuperAdmin, show the option to reply to the Question *@
+        @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
+        {
+            //Init the form
+            <form action="~/Home/SaveReply" method="POST">
+                @* The input field itself *@
+                <div class="group">
+                    <input type="text" name="replyText" style="width:100%;" required>
+                    <span class="highlight"></span>
+                    <span class="bar" style="width:100%;"></span>
+                    <label>Enter your reply here</label>
                 </div>
 
-                @if ((@Model[0].qrvmodel[p].Status == "Approved") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                {
-                    @Html.Raw("<div class='cd-timeline__content-approved cd-timeline__content js-cd-content'>")
-                }
-                else if ((@Model[0].qrvmodel[p].Status == "Rejected") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                {
-                    @Html.Raw("<div class='cd-timeline__content-rejected cd-timeline__content js-cd-content'>")
-                }
-                else if ((@Model[0].qrvmodel[p].Status == "Submitted") && (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")))
-                {
-                    @Html.Raw("<div class='cd-timeline__content-submitted cd-timeline__content js-cd-content'>")
-                }
-                else
-                {
-                    @Html.Raw("<div class='cd-timeline__content js-cd-content'>")
-                }
+                @* Hidden input to set the ID that the reply should be set to *@
+                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
+            </form>
+        }
 
-                <p class="innertext">
-                    @Model[0].qrvmodel[p].QuestionText
-                </p>
+        @* If user is a moderator or superadmin, and the question hasn't been marked as Approved, show the Approve button *@
+        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
+        {
+            <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
+                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                <input type="hidden" name="IsApproved" value="True" />
+                <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
+            </form>
+        }
+        @* If user is a moderator or superadmin, and the question hasn't been marked as Rejected, show the Rejected button *@
+        @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Rejected")
+        {
+            <form action="~/Home/RejectQuestion" class="buttons" method="POST">
+                <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                <input type="hidden" name="IsApproved" value="False" />
+                <button type="submit" class="formButton reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
+            </form>
+        }
+        @* If user is a moderator or superadmin, and the question hasn't been marked as Approved, show the Edit form *@
+        @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")) && @Model[0].qrvmodel[p].Status != "Approved")
+        {
+            <div style="position:relative;clear: both;">
+                @* Edit form *@
+                <form action="~/Home/EditQuestion" class="editForm" method="POST">
+                    <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
+                    <input type="hidden" name="IsApproved" value="True" />
+                    <input type="hidden" name="user" value="@User.Identity.Name" />
+                    <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
+                    <br />
 
-                <span class="cd-timeline__date">
-                    Asked @GetPrettyDate(Model[0].qrvmodel[p].TimeAsked)
-                    @if (!((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
-                    {
-                        <br /><span>Edit Reason: @Model[0].qrvmodel[p].EditReason</span>
-                    }
-                </span>
-
-                @if (@User.IsInRole("Leader") || @User.IsInRole("SuperAdmin"))
-                {
-                    <form action="~/Home/SaveReply" method="POST">
-
-                        <div class="group">
-                            <input type="text" name="replyText" style="width:100%;" required>
-                            <span class="highlight"></span>
-                            <span class="bar" style="width:100%;"></span>
-                            <label>Enter your reply here</label>
-                        </div>
-
-                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                        <button type="submit" class="formButton submit buttonNew btn-1 btn-1a" value="Submit">SUBMIT REPLY</button>
-                    </form>
-                }
-                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Approved")
-                {
-                    <form action="~/Home/AcceptQuestion" class="buttons" method="POST">
-                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                        <input type="hidden" name="IsApproved" value="True" />
-                        <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" value="Submit">APPROVE</button>
-                    </form>
-                }
-                @if (@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin") && @Model[0].qrvmodel[p].Status != "Rejected")
-                {
-                    <form action="~/Home/RejectQuestion" class="buttons" method="POST">
-                        <input type="hidden" name="fk_QuestionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                        <input type="hidden" name="IsApproved" value="False" />
-                        <button type="submit" class="formButton reject buttonNew btn-1 btn-1a" value="Submit">REJECT</button>
-                    </form>
-                }
-                @if ((@User.IsInRole("Moderator") || @User.IsInRole("SuperAdmin")) && @Model[0].qrvmodel[p].Status != "Approved")
-                {
-                    <div style="position:relative;clear: both;">
-                        <form action="~/Home/EditQuestion" class="editForm" method="POST">
-                            <input type="hidden" name="questionId" value="@Model[0].qrvmodel[p].QuestionId" />
-                            <input type="hidden" name="IsApproved" value="True" />
-                            <input type="hidden" name="user" value="@User.Identity.Name" />
-                            <input type="hidden" name="oldText" value="@Model[0].qrvmodel[p].QuestionText" />
-                            <br />
-
-                            <div class="group">
-                                <input type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText" required>
-                                <span class="highlight"></span>
-                                <span class="bar"></span>
-                                <label>Question Text</label>
-                            </div>
-
-                            <div class="group">
-                                @{
-                                    int edited;
-                                    if (((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
-                                    {
-                                        edited = 1;
-                                    }
-                                    else
-                                    {
-                                        edited = 0;
-                                    }
-
-                                    string reasonClass = "reason " + edited + " reason" + @Model[0].qrvmodel[p].QuestionId;
-                                }
-                                <select name="reason" id="reason" class="@reasonClass" required>
-                                    <option value="">Please select edit reason...</option>
-                                    <option value="Profanity">Profanity</option>
-                                    <option value="Removing client name">Removing client name</option>
-                                    <option value="Removing individual name">Removing individual name</option>
-                                    <option value="Other">Other (please specify)</option>
-                                </select>
-
-                                @{
-                                    string editClass = "edittextareas edittextarea" + @Model[0].qrvmodel[p].QuestionId;
-                                }
-                                <br />
-                                <input type="text" class="@editClass" name="reasonOther" id="reasonOther" placeholder="Please enter a reason" style="display:none" required />
-
-
-
-                                @*<input type="text" class="edittextareas" name="reason" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label><i>Enter edit reason</i></label>*@
-                            </div>
-                            <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
-                        </form>
+                    <div class="group">
+                        <input type="text" class="edittextareas" value="@Model[0].qrvmodel[p].QuestionText" name="editText" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label>Question Text</label>
                     </div>
-                }
-                <div id="blank"></div>
+
+                    <div class="group">
+                        @{
+                            //Code to help the javascript class show and hide the additional field for the Edit form
+                            int edited;
+                            if (((@Model[0].qrvmodel[p].EditReason == "") || (@Model[0].qrvmodel[p].EditReason == null)))
+                            {
+                                edited = 1;
+                            }
+                            else
+                            {
+                                edited = 0;
+                            }
+
+                            string reasonClass = "reason " + edited + " reason" + @Model[0].qrvmodel[p].QuestionId;
+                        }
+                        <select name="reason" id="reason" class="@reasonClass" required>
+                            <option value="">Please select edit reason...</option>
+                            <option value="Profanity">Profanity</option>
+                            <option value="Removing client name">Removing client name</option>
+                            <option value="Removing individual name">Removing individual name</option>
+                            <option value="Other">Other (please specify)</option>
+                        </select>
+
+                        @{
+                            string editClass = "edittextareas edittextarea" + @Model[0].qrvmodel[p].QuestionId;
+                        }
+                        <br />
+                        <input type="text" class="@editClass" name="reasonOther" id="reasonOther" placeholder="Please enter a reason" style="display:none" required />
+
+
+
+                        @*<input type="text" class="edittextareas" name="reason" required>
+                        <span class="highlight"></span>
+                        <span class="bar"></span>
+                        <label><i>Enter edit reason</i></label>*@
+                    </div>
+                    <button type="submit" class="formButton approve buttonNew btn-1 btn-1a" style="float:unset" value="Submit">Edit and Approve</button>
+                </form>
             </div>
-            @Html.Raw("</div>")<!-- Question -->
+        }
+        <div id="blank"></div>
+    </div>
+            @Html.Raw("</div>")
+            //Display the reply fields
             if (Model[0].qrvmodel[p].IsAnswered)
             {
-                //int jHold=0;
-
+                //For each of the replies to this quesiton, display the reply
                 for (int j = Model[0].questionCount[i] - 1; j >= 0; j--)
                 {
                     <div class="cd-timeline__block js-cd-block timeline-reply">
@@ -439,6 +446,7 @@
 
         }
 
+        //Increment past the additional rows, as calculated in the controller
         if (Model[0].questionCount[i] == 0)
         {
             p++;
@@ -450,6 +458,7 @@
     }
 </div>
 <script>
+//Jquery to filter out the results when clicking filters
 @if (@User.IsInRole("Moderator"))
 {
     @: $(".approved").fadeOut();
