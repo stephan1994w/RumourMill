@@ -17,6 +17,15 @@ namespace RumourMill.Controllers
     {
         private RumourMillEntities db = new RumourMillEntities();
 
+        /*
+         * Method to display the Index View. 
+         * Before the View is loaded, the Questions table is joined to the Replies table to show all questions
+         * and the replies associated with those questions. 
+         * For every question that has a reply, this method loops through the replies and appends them below the
+         * question.
+         * @return The Index View.
+         */
+
         [AllowAnonymous]
         public ActionResult Index()
         {
@@ -101,20 +110,15 @@ namespace RumourMill.Controllers
                 questionCount = qCount
             });
 
-
-
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    string test = User.Identity.Name;
-            //    test = test;
-            //    db.Set<Leader>().SingleOrDefault(o => o.LeaderName == User.Identity.Name).LastAccess = DateTime.Now.AddHours(1);
-            //    db.SaveChanges();
-            //}
-
             return View(model);
         }
 
-        // allow anyone to ask a question
+        /*
+         * Method to allow anyone to ask a question.
+         * @param questionText - The text of the user's question.
+         * @return Redirect the user to the index page.
+         */
+
         [AllowAnonymous]
         public ActionResult Save(string questionText)
         {
@@ -164,7 +168,13 @@ namespace RumourMill.Controllers
             }
         }
 
-        // allow only SuperAdmin and Leader to reply
+        /*
+         * Method to allow a Leader to reply to a question
+         * @param replyText - The text of the leaders response.
+         * @param fk_QuestionId - The question ID of the question the leader is replying to.
+         * @return Redirect the user to the index page.
+         */
+
         [Authorize(Roles = "Leader, SuperAdmin")]
         public ActionResult SaveReply(string replyText, int fk_QuestionId)
         {
@@ -201,7 +211,13 @@ namespace RumourMill.Controllers
             }
         }
 
-        // allow only SuperAdmin and Moderator to accept questions
+
+        /*
+         * Method to allow moderators to accept a question.
+         * @param fk_QuestionId - The question ID of the question to be accepted.
+         * @return Redirect the user to the index page.
+         */
+
         [Authorize(Roles = "Moderator, SuperAdmin")]
         public ActionResult AcceptQuestion(int fk_QuestionId)
         {
@@ -223,7 +239,12 @@ namespace RumourMill.Controllers
             }
         }
 
-        // allow only SuperAdmin and Moderator to accept questions
+        /*
+         * Method to allow moderators to reject a question.
+         * @param fk_QuestionId - The question ID of the question to be rejected.
+         * @return Redirect the user to the index page.
+         */
+        
         [Authorize(Roles = "Moderator, SuperAdmin")]
         public ActionResult RejectQuestion(int fk_QuestionId)
         {
@@ -245,6 +266,18 @@ namespace RumourMill.Controllers
             }
         }
 
+        /*
+         * Method to edit a question. This method can only be called as a SuperAdmin or a Moderator.
+         * @param questionId - The question Id of the question that should be edited.
+         * @param editText - The edited version of the question that should be edited.
+         * @param reason - The reason why the question was edited.
+         * @param user - The user who made the edit (for the log)
+         * @param oldText - The old question text (for the log)
+         * @param reasonOther - If the moderator selected Other as their reason, the free text box is stored here.
+         * @return Redirect the user to the index page.
+         * 
+         */
+
         [Authorize(Roles = "Moderator, SuperAdmin")]
         public ActionResult EditQuestion(int questionId, string editText, string reason, string user, string oldText, string reasonOther)
         {
@@ -263,8 +296,9 @@ namespace RumourMill.Controllers
 
                 db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).EditReason = reasonToWrite;
                 db.SaveChanges();
-
+                // load reference to Log DB table.
                 var log = db.Set<Log>();
+                // add new row to Log DB table.
                 log.Add(new Log
                 {
                     QuestionId = questionId,
@@ -278,6 +312,7 @@ namespace RumourMill.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    // edit the question text for the question ID that was passed through, and mark as approved.
                     db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).QuestionText = editText;
                     db.Set<Question>().SingleOrDefault(o => o.QuestionId == questionId).Status = "Approved";
                     db.SaveChanges();
@@ -290,17 +325,35 @@ namespace RumourMill.Controllers
             }
         }
 
+        /*
+         * Method to display the Login View. Can be called by all users. 
+         * @return The Login View.
+         */
+
         [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        /*
+         * Method to display the ChangePassword View. Can only be called when logged in.
+         * @return The ChangePassword View.
+         */
+
         [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
         public ActionResult ChangePassword()
         {
             return View();
         }
+
+        /*
+         * Method to change the password. Can only be called when logged in as Moderator, SuperAdmin or Leader.
+         * @param currentPassword - The current password in unhashed form
+         * @param newPassword - The new password in unhashed form
+         * @param leaderModel - The customised version of the Leader model with error messages.
+         * @return The View if authentication fails, else redirect the user to the index page.
+         */
 
         [HttpPost]
         [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
@@ -344,6 +397,13 @@ namespace RumourMill.Controllers
             return View(leaderModel); //Should always be declared on the end of an action method
 
         }
+
+        /*
+         * Method to log the user in
+         * @param The customised version of the leader model that includes an error message (for display on login)
+         * @return Redirects the user to the index if logged in, else returns the View again.
+         * 
+         */
 
         [HttpPost]
         [AllowAnonymous]
@@ -401,7 +461,11 @@ namespace RumourMill.Controllers
 
         }
 
-        // log the user out.
+        /*
+         * Method to log the user out.
+         * @return Redirect the user to the index page.
+         */
+
         [AllowAnonymous]
         public ActionResult LogOut()
         {
@@ -414,7 +478,12 @@ namespace RumourMill.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //method to hash the password using SHA256 encryption
+        /**
+         * Method to hash the passwords using SHA-256 Encryption to ensure they're stored securely.
+         * @param phrase - the password to be encrypted.
+         * @return the hashed password
+         **/
+
         [AllowAnonymous]
         public static string Sha256encrypt(string phrase)
         {
