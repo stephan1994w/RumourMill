@@ -55,7 +55,8 @@ html {
     background-image: url('bg.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: top;
+    background-position: right;
+    background-size: cover;
 }
 
 
