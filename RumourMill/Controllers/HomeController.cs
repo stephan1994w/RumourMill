@@ -357,7 +357,7 @@ namespace RumourMill.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Moderator, SuperAdmin, Leader")]
-        public ActionResult ChangePassword(string currentPassword, string newPassword, LeaderErrors leaderModel)
+        public ActionResult ChangePassword([Bind(Include="currentPassword,newPassword,LeaderId,Password,ErrorMessage")] string currentPassword, string newPassword, LeaderErrors leaderModel)
         {
             if (!ModelState.IsValid) //Checks if input fields have the correct format
             {
@@ -407,7 +407,7 @@ namespace RumourMill.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(LeaderErrors leaderModel)
+        public ActionResult Login([Bind(Include="UserName,Password,Role,LeaderName,LeaderId")]LeaderErrors leaderModel)
         {
             if (!ModelState.IsValid) //Checks if input fields have the correct format
             {
